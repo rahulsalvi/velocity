@@ -1,4 +1,4 @@
-#include "ResetColor.h"
+#include "color/ResetColor.h"
 
 namespace velocity::color {
     ResetColor::ResetColor() {}

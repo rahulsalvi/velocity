@@ -1,4 +1,4 @@
-#include "Format.h"
+#include "color/Format.h"
 
 namespace velocity::color {
     Format::Format(shared_ptr<Color> foreground, shared_ptr<Color> background)

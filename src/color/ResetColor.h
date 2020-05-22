@@ -1,8 +1,8 @@
 #ifndef RESETCOLOR_H
 #define RESETCOLOR_H
 
-#include "Color.h"
-#include "ColorVisitor.h"
+#include "color/Color.h"
+#include "color/visitor/ColorVisitor.h"
 
 namespace velocity::color {
     class ResetColor : public Color {

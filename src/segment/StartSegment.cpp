@@ -1,5 +1,5 @@
-#include "StartSegment.h"
-#include "ResetColor.h"
+#include "segment/StartSegment.h"
+#include "color/ResetColor.h"
 
 using std::make_shared;
 using velocity::color::ResetColor;

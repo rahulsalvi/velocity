@@ -1,4 +1,4 @@
-#include "RGBColor.h"
+#include "color/RGBColor.h"
 
 namespace velocity::color {
     RGBColor::RGBColor(uint8_t r, uint8_t g, uint8_t b) : r_(r), g_(g), b_(b) {}

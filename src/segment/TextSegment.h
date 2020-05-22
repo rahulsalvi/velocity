@@ -1,8 +1,8 @@
 #ifndef TEXTSEGMENT_H
 #define TEXTSEGMENT_H
 
-#include "Segment.h"
-#include "SegmentVisitor.h"
+#include "segment/Segment.h"
+#include "segment/visitor/SegmentVisitor.h"
 
 namespace velocity::segment {
     class TextSegment : public Segment {

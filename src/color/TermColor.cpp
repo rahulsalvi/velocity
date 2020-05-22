@@ -1,4 +1,4 @@
-#include "TermColor.h"
+#include "color/TermColor.h"
 
 namespace velocity::color {
     TermColor::TermColor(string color_str) : color_str_(color_str) {}

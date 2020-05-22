@@ -1,12 +1,12 @@
 #include <iostream>
 #include <memory>
 
-#include "EndSegment.h"
-#include "RGBColor.h"
-#include "ResetColor.h"
-#include "StartSegment.h"
-#include "TermColor.h"
-#include "TextSegment.h"
+#include "color/RGBColor.h"
+#include "color/ResetColor.h"
+#include "color/TermColor.h"
+#include "segment/EndSegment.h"
+#include "segment/StartSegment.h"
+#include "segment/TextSegment.h"
 #include "zsh/ForwardGenerator.h"
 #include "zsh/ReverseGenerator.h"
 
@@ -19,7 +19,11 @@ using velocity::segment::EndSegment;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
 
+#include <chrono>
+
 int main() {
+    auto a = std::chrono::high_resolution_clock::now();
+
     auto rgb_red    = make_shared<RGBColor>(255, 0, 0);
     auto term_cyan  = make_shared<TermColor>("cyan");
     auto term_black = make_shared<TermColor>("black");
@@ -40,6 +44,11 @@ int main() {
     velocity::segment::zsh::ForwardGenerator p;
     start->accept(p);
     cout << p.text() << endl;
+
+    auto b = std::chrono::high_resolution_clock::now();
+
+    double time_taken = std::chrono::duration_cast<std::chrono::microseconds>(b - a).count();
+    cout << time_taken << " us" << endl;
 
     auto t3 = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
     auto t4 = make_shared<TextSegment>(Format(term_black, rgb_purple), "foo", "", 0);

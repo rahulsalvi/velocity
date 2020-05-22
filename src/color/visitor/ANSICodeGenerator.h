@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include "ColorVisitor.h"
-#include "RGBColor.h"
-#include "ResetColor.h"
-#include "TermColor.h"
+#include "color/RGBColor.h"
+#include "color/ResetColor.h"
+#include "color/TermColor.h"
+#include "color/visitor/ColorVisitor.h"
 
 namespace velocity::color {
     class ANSICodeGenerator : public ColorVisitor {

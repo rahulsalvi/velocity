@@ -3,8 +3,8 @@
 
 #include <cstdint>
 
-#include "Color.h"
-#include "ColorVisitor.h"
+#include "color/Color.h"
+#include "color/visitor/ColorVisitor.h"
 
 namespace velocity::color {
     class RGBColor : public Color {

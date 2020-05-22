@@ -1,4 +1,4 @@
-#include "TextSegment.h"
+#include "segment/TextSegment.h"
 #include "utils.h"
 
 namespace velocity::segment {

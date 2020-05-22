@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "Format.h"
+#include "color/Format.h"
 
 using std::shared_ptr;
 using std::string;

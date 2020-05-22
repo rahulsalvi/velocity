@@ -1,8 +1,8 @@
 #ifndef TERMCOLOR_H
 #define TERMCOLOR_H
 
-#include "Color.h"
-#include "ColorVisitor.h"
+#include "color/Color.h"
+#include "color/visitor/ColorVisitor.h"
 
 namespace velocity::color {
     class TermColor : public Color {

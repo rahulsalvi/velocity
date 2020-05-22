@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Color.h"
+#include "color/Color.h"
 
 using std::shared_ptr;
 

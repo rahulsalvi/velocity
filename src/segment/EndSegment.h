@@ -1,14 +1,14 @@
-#ifndef STARTSEGMENT_H
-#define STARTSEGMENT_H
+#ifndef ENDSEGMENT_H
+#define ENDSEGMENT_H
 
-#include "Segment.h"
-#include "SegmentVisitor.h"
+#include "segment/Segment.h"
+#include "segment/visitor/SegmentVisitor.h"
 
 namespace velocity::segment {
-    class StartSegment : public Segment {
+    class EndSegment : public Segment {
         public:
-        StartSegment();
-        virtual ~StartSegment();
+        EndSegment();
+        virtual ~EndSegment();
 
         virtual int  length() override;
         virtual int  trim() override;
@@ -18,4 +18,4 @@ namespace velocity::segment {
     };
 } // namespace velocity::segment
 
-#endif // STARTSEGMENT_H
+#endif // ENDSEGMENT_H

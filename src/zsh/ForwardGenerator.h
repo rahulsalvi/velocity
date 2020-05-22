@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "ANSICodeGenerator.h"
-#include "EndSegment.h"
-#include "SegmentVisitor.h"
-#include "StartSegment.h"
-#include "TextSegment.h"
+#include "color/visitor/ANSICodeGenerator.h"
+#include "segment/EndSegment.h"
+#include "segment/StartSegment.h"
+#include "segment/TextSegment.h"
+#include "segment/visitor/SegmentVisitor.h"
 
 using std::string;
 using velocity::color::ANSICodeGenerator;
