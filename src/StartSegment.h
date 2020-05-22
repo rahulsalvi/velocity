@@ -2,18 +2,20 @@
 #define STARTSEGMENT_H
 
 #include "Segment.h"
-#include "Visitor.h"
+#include "SegmentVisitor.h"
 
-class StartSegment : public Segment {
-    public:
-    StartSegment();
-    virtual ~StartSegment();
+namespace velocity::segment {
+    class StartSegment : public Segment {
+        public:
+        StartSegment();
+        virtual ~StartSegment();
 
-    virtual int  length() override;
-    virtual int  trim() override;
-    virtual void expand() override;
+        virtual int  length() override;
+        virtual int  trim() override;
+        virtual void expand() override;
 
-    virtual void accept(Visitor& visitor) override;
-};
+        virtual void accept(SegmentVisitor& visitor) override;
+    };
+} // namespace velocity::segment
 
 #endif // STARTSEGMENT_H

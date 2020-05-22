@@ -1,19 +1,21 @@
 #include "RGBColor.h"
 
-using std::to_string;
+namespace velocity::color {
+    RGBColor::RGBColor(uint8_t r, uint8_t g, uint8_t b) : r_(r), g_(g), b_(b) {}
 
-RGBColor::RGBColor(uint8_t r, uint8_t g, uint8_t b) : r_(r), g_(g), b_(b) {}
+    RGBColor::~RGBColor() {}
 
-RGBColor::~RGBColor() {}
+    string RGBColor::accept_foreground(ColorVisitor& visitor) {
+        return visitor.visit_foreground(*this);
+    }
 
-string RGBColor::ansi_code_foreground() const {
-    return "\e[38;2;" + ansi_code_base() + "m";
-}
+    string RGBColor::accept_background(ColorVisitor& visitor) {
+        return visitor.visit_background(*this);
+    }
 
-string RGBColor::ansi_code_background() const {
-    return "\e[48;2;" + ansi_code_base() + "m";
-}
+    uint8_t RGBColor::r() { return r_; }
 
-string RGBColor::ansi_code_base() const {
-    return to_string(r_) + ";" + to_string(g_) + ";" + to_string(b_);
-}
+    uint8_t RGBColor::g() { return g_; }
+
+    uint8_t RGBColor::b() { return b_; }
+} // namespace velocity::color

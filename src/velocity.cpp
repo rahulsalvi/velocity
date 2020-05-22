@@ -2,16 +2,22 @@
 #include <memory>
 
 #include "EndSegment.h"
-#include "OutputGenerator.h"
 #include "RGBColor.h"
 #include "ResetColor.h"
 #include "StartSegment.h"
 #include "TermColor.h"
 #include "TextSegment.h"
+#include "zsh/ForwardGenerator.h"
+#include "zsh/ReverseGenerator.h"
 
 using std::cout;
 using std::endl;
 using std::make_shared;
+using velocity::color::RGBColor;
+using velocity::color::TermColor;
+using velocity::segment::EndSegment;
+using velocity::segment::StartSegment;
+using velocity::segment::TextSegment;
 
 int main() {
     auto rgb_red    = make_shared<RGBColor>(255, 0, 0);
@@ -20,19 +26,33 @@ int main() {
     auto rgb_purple = make_shared<RGBColor>(255, 0, 255);
 
     auto start = make_shared<StartSegment>();
-    auto t     = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
+    auto t1    = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
     auto t2    = make_shared<TextSegment>(Format(term_black, rgb_purple), "foo", "", 0);
     auto end   = make_shared<EndSegment>();
 
-    start->set_next(t);
-    t->set_prev(start);
-    t->set_next(t2);
-    t2->set_prev(t);
+    start->set_next(t1);
+    t1->set_prev(start);
+    t1->set_next(t2);
+    t2->set_prev(t1);
     t2->set_next(end);
     end->set_prev(t2);
 
-    OutputGenerator p;
+    velocity::segment::zsh::ForwardGenerator p;
     start->accept(p);
-    cout << p.text();
+    cout << p.text() << endl;
+
+    auto t3 = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
+    auto t4 = make_shared<TextSegment>(Format(term_black, rgb_purple), "foo", "", 0);
+
+    start->set_next(t3);
+    t3->set_prev(start);
+    t3->set_next(t4);
+    t4->set_prev(t3);
+    t4->set_next(end);
+    end->set_prev(t4);
+
+    velocity::segment::zsh::ReverseGenerator p2;
+    start->accept(p2);
+    cout << p2.text() << endl;
     return 0;
 }

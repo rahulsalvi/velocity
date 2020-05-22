@@ -1,13 +1,15 @@
 #include "ResetColor.h"
 
-ResetColor::ResetColor() {}
+namespace velocity::color {
+    ResetColor::ResetColor() {}
 
-ResetColor::~ResetColor() {}
+    ResetColor::~ResetColor() {}
 
-string ResetColor::ansi_code_foreground() const {
-    return "\e[39m";
-}
+    string ResetColor::accept_foreground(ColorVisitor& visitor) {
+        return visitor.visit_foreground(*this);
+    }
 
-string ResetColor::ansi_code_background() const {
-    return "\e[49m";
-}
+    string ResetColor::accept_background(ColorVisitor& visitor) {
+        return visitor.visit_background(*this);
+    }
+} // namespace velocity::color

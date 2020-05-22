@@ -1,18 +1,17 @@
 #include "TermColor.h"
 
-using std::to_string;
+namespace velocity::color {
+    TermColor::TermColor(string color_str) : color_str_(color_str) {}
 
-TermColor::TermColor(string color) {
-    foreground_ = color2code.at(color);
-    background_ = foreground_ + 10;
-}
+    TermColor::~TermColor() {}
 
-TermColor::~TermColor() {}
+    string TermColor::accept_foreground(ColorVisitor& visitor) {
+        return visitor.visit_foreground(*this);
+    }
 
-string TermColor::ansi_code_foreground() const {
-    return "\e[" + to_string(foreground_) + "m";
-}
+    string TermColor::accept_background(ColorVisitor& visitor) {
+        return visitor.visit_background(*this);
+    }
 
-string TermColor::ansi_code_background() const {
-    return "\e[" + to_string(background_) + "m";
-}
+    string TermColor::color_str() { return color_str_; }
+} // namespace velocity::color

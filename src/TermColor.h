@@ -1,39 +1,22 @@
 #ifndef TERMCOLOR_H
 #define TERMCOLOR_H
 
-#include <unordered_map>
-
 #include "Color.h"
+#include "ColorVisitor.h"
 
-using std::unordered_map;
+namespace velocity::color {
+    class TermColor : public Color {
+        public:
+        TermColor(string color_str = "black");
+        virtual ~TermColor();
+        virtual string accept_foreground(ColorVisitor& visitor);
+        virtual string accept_background(ColorVisitor& visitor);
 
-static const unordered_map<string, int> color2code = {{"black", 30},
-                                                      {"red", 31},
-                                                      {"green", 32},
-                                                      {"yellow", 33},
-                                                      {"blue", 34},
-                                                      {"magenta", 35},
-                                                      {"cyan", 36},
-                                                      {"white", 37},
-                                                      {"brblack", 90},
-                                                      {"brred", 91},
-                                                      {"brgreen", 92},
-                                                      {"bryellow", 93},
-                                                      {"brblue", 94},
-                                                      {"brmagenta", 95},
-                                                      {"brcyan", 96},
-                                                      {"brwhite", 97}};
+        string color_str();
 
-class TermColor : public Color {
-    public:
-    TermColor(string color = "black");
-    virtual ~TermColor();
-    virtual string ansi_code_foreground() const override;
-    virtual string ansi_code_background() const override;
-
-    private:
-    int foreground_;
-    int background_;
-};
+        private:
+        string color_str_;
+    };
+} // namespace velocity::color
 
 #endif // TERMCOLOR_H

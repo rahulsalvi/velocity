@@ -2,18 +2,20 @@
 #define TEXTSEGMENT_H
 
 #include "Segment.h"
-#include "Visitor.h"
+#include "SegmentVisitor.h"
 
-class TextSegment : public Segment {
-    public:
-    TextSegment(Format format, string text, string separator, int priority);
-    virtual ~TextSegment();
+namespace velocity::segment {
+    class TextSegment : public Segment {
+        public:
+        TextSegment(Format format, string text, string separator, int priority);
+        virtual ~TextSegment();
 
-    virtual int  length() override;
-    virtual int  trim() override;
-    virtual void expand() override;
+        virtual int  length() override;
+        virtual int  trim() override;
+        virtual void expand() override;
 
-    virtual void accept(Visitor& visitor) override;
-};
+        virtual void accept(SegmentVisitor& visitor) override;
+    };
+} // namespace velocity::segment
 
 #endif // TEXTSEGMENT_H
