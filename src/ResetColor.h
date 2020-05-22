@@ -3,7 +3,7 @@
 
 #include "Color.h"
 
-class ResetColor : Color {
+class ResetColor : public Color {
     public:
     ResetColor();
     virtual ~ResetColor();
