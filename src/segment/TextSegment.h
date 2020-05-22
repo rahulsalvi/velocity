@@ -10,10 +10,6 @@ namespace velocity::segment {
         TextSegment(Format format, string text, string separator, int priority);
         virtual ~TextSegment();
 
-        virtual int  length() override;
-        virtual int  trim() override;
-        virtual void expand() override;
-
         virtual void accept(SegmentVisitor& visitor) override;
     };
 } // namespace velocity::segment

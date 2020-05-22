@@ -10,10 +10,6 @@ namespace velocity::segment {
         StartSegment();
         virtual ~StartSegment();
 
-        virtual int  length() override;
-        virtual int  trim() override;
-        virtual void expand() override;
-
         virtual void accept(SegmentVisitor& visitor) override;
     };
 } // namespace velocity::segment
