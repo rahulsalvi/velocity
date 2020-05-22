@@ -1,6 +1,6 @@
 #include "zsh/ForwardGenerator.h"
 
-namespace velocity::segment::zsh {
+namespace velocity::zsh {
     ForwardGenerator::ForwardGenerator() : text_(""), color_generator_() {}
 
     ForwardGenerator::~ForwardGenerator() {}
@@ -25,4 +25,4 @@ namespace velocity::segment::zsh {
     }
 
     const string& ForwardGenerator::text() const { return text_; }
-} // namespace velocity::segment::zsh
+} // namespace velocity::zsh

@@ -1,6 +1,6 @@
 #include "zsh/ReverseGenerator.h"
 
-namespace velocity::segment::zsh {
+namespace velocity::zsh {
     ReverseGenerator::ReverseGenerator() : text_("") {}
 
     ReverseGenerator::~ReverseGenerator() {}
@@ -26,4 +26,4 @@ namespace velocity::segment::zsh {
     }
 
     const string& ReverseGenerator::text() const { return text_; }
-} // namespace velocity::segment::zsh
+} // namespace velocity::zsh

@@ -18,6 +18,8 @@ using velocity::color::TermColor;
 using velocity::segment::EndSegment;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
+using velocity::zsh::ForwardGenerator;
+using velocity::zsh::ReverseGenerator;
 
 #include <chrono>
 
@@ -41,7 +43,7 @@ int main() {
     t2->set_next(end);
     end->set_prev(t2);
 
-    velocity::segment::zsh::ForwardGenerator p;
+    ForwardGenerator p;
     start->accept(p);
     cout << p.text() << endl;
 
@@ -60,7 +62,7 @@ int main() {
     t4->set_next(end);
     end->set_prev(t4);
 
-    velocity::segment::zsh::ReverseGenerator p2;
+    ReverseGenerator p2;
     start->accept(p2);
     cout << p2.text() << endl;
     return 0;

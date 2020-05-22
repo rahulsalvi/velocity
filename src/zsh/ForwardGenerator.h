@@ -16,7 +16,7 @@ using velocity::segment::SegmentVisitor;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
 
-namespace velocity::segment::zsh {
+namespace velocity::zsh {
     class ForwardGenerator : public SegmentVisitor {
         public:
         ForwardGenerator();
@@ -31,6 +31,6 @@ namespace velocity::segment::zsh {
         string            text_;
         ANSICodeGenerator color_generator_;
     };
-} // namespace velocity::segment::zsh
+} // namespace velocity::zsh
 
 #endif // ZSHFORWARDGENERATOR_H
