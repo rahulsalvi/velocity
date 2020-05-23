@@ -13,9 +13,11 @@ set(SRCS
     src/segment/StartSegment.cpp
     src/segment/TextSegment.cpp
     src/segment/EndSegment.cpp
+    src/segment/CWDSegment.cpp
     src/color/visitor/ANSICodeGenerator.cpp
     src/zsh/ForwardGenerator.cpp
     src/zsh/ReverseGenerator.cpp
+    src/zsh/ColorCodeGenerator.cpp
     src/velocity.cpp)
 
 set(CMAKE_CXX_STANDARD 17)

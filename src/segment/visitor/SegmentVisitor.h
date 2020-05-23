@@ -5,6 +5,7 @@ namespace velocity::segment {
     class StartSegment;
     class EndSegment;
     class TextSegment;
+    class CWDSegment;
 
     class SegmentVisitor {
         public:
@@ -12,6 +13,7 @@ namespace velocity::segment {
         virtual void visit(StartSegment& segment) = 0;
         virtual void visit(EndSegment& segment)   = 0;
         virtual void visit(TextSegment& segment)  = 0;
+        virtual void visit(CWDSegment& segment)   = 0;
     };
 } // namespace velocity::segment
 

@@ -1,5 +1,4 @@
 #include "segment/TextSegment.h"
-#include "utils.h"
 
 namespace velocity::segment {
     TextSegment::TextSegment(Format format, string text, string separator, int priority)

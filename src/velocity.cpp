@@ -4,6 +4,7 @@
 #include "color/RGBColor.h"
 #include "color/ResetColor.h"
 #include "color/TermColor.h"
+#include "segment/CWDSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
@@ -15,6 +16,7 @@ using std::endl;
 using std::make_shared;
 using velocity::color::RGBColor;
 using velocity::color::TermColor;
+using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
@@ -23,47 +25,64 @@ using velocity::zsh::ReverseGenerator;
 
 #include <chrono>
 
-int main() {
-    auto a = std::chrono::high_resolution_clock::now();
-
-    auto rgb_red    = make_shared<RGBColor>(255, 0, 0);
-    auto term_cyan  = make_shared<TermColor>("cyan");
-    auto term_black = make_shared<TermColor>("black");
-    auto rgb_purple = make_shared<RGBColor>(255, 0, 255);
+void prompt_forward() {
+    auto term_brcyan = make_shared<TermColor>("brcyan");
+    auto term_black  = make_shared<TermColor>("black");
+    auto term_blue   = make_shared<TermColor>("blue");
 
     auto start = make_shared<StartSegment>();
-    auto t1    = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
-    auto t2    = make_shared<TextSegment>(Format(term_black, rgb_purple), "foo", "", 0);
-    auto end   = make_shared<EndSegment>();
+    auto hostinfo =
+        make_shared<TextSegment>(Format(term_black, term_brcyan), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue), "", "", 0);
+    auto end = make_shared<EndSegment>();
 
-    start->set_next(t1);
-    t1->set_prev(start);
-    t1->set_next(t2);
-    t2->set_prev(t1);
-    t2->set_next(end);
-    end->set_prev(t2);
+    start->set_next(hostinfo);
+    hostinfo->set_prev(start);
+    hostinfo->set_next(cwd);
+    cwd->set_prev(hostinfo);
+    cwd->set_next(end);
+    end->set_prev(cwd);
+
+    cwd->eval();
 
     ForwardGenerator p;
     start->accept(p);
-    cout << p.text() << endl;
+    cout << p.text();
+}
 
-    auto b = std::chrono::high_resolution_clock::now();
+void prompt_reverse() {
+    auto term_brcyan = make_shared<TermColor>("brcyan");
+    auto term_black  = make_shared<TermColor>("black");
+    auto term_blue   = make_shared<TermColor>("blue");
 
-    double time_taken = std::chrono::duration_cast<std::chrono::microseconds>(b - a).count();
-    cout << time_taken << " us" << endl;
+    auto start = make_shared<StartSegment>();
+    auto hostinfo =
+        make_shared<TextSegment>(Format(term_black, term_brcyan), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue), "", "", 0);
+    auto end = make_shared<EndSegment>();
 
-    auto t3 = make_shared<TextSegment>(Format(rgb_red, term_cyan), "hello world", "", 0);
-    auto t4 = make_shared<TextSegment>(Format(term_black, rgb_purple), "foo", "", 0);
+    start->set_next(hostinfo);
+    hostinfo->set_prev(start);
+    hostinfo->set_next(cwd);
+    cwd->set_prev(hostinfo);
+    cwd->set_next(end);
+    end->set_prev(cwd);
 
-    start->set_next(t3);
-    t3->set_prev(start);
-    t3->set_next(t4);
-    t4->set_prev(t3);
-    t4->set_next(end);
-    end->set_prev(t4);
+    cwd->eval();
 
-    ReverseGenerator p2;
-    start->accept(p2);
-    cout << p2.text() << endl;
+    ReverseGenerator p;
+    start->accept(p);
+    cout << p.text();
+}
+
+int main() {
+    /* auto a = std::chrono::high_resolution_clock::now(); */
+
+    prompt_forward();
+    /* prompt_reverse(); */
+
+    /* auto   b          = std::chrono::high_resolution_clock::now(); */
+    /* double time_taken = std::chrono::duration_cast<std::chrono::microseconds>(b - a).count(); */
+    /* cout << time_taken << " us" << endl; */
     return 0;
 }

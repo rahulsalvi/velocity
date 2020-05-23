@@ -3,14 +3,15 @@
 
 #include <string>
 
-#include "color/visitor/ANSICodeGenerator.h"
+#include "segment/CWDSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
+#include "zsh/ColorCodeGenerator.h"
 
 using std::string;
-using velocity::color::ANSICodeGenerator;
+using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
 using velocity::segment::SegmentVisitor;
 using velocity::segment::StartSegment;
@@ -24,12 +25,13 @@ namespace velocity::zsh {
         virtual void visit(StartSegment& segment);
         virtual void visit(EndSegment& segment);
         virtual void visit(TextSegment& segment);
+        virtual void visit(CWDSegment& segment);
 
         const string& text() const;
 
         private:
-        string            text_;
-        ANSICodeGenerator color_generator_;
+        string             text_;
+        ColorCodeGenerator color_generator_;
     };
 } // namespace velocity::zsh
 
