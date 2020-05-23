@@ -38,5 +38,9 @@ namespace velocity::zsh {
         segment.next()->accept(*this);
     }
 
+    void ForwardGenerator::visit(ConditionalSegment&) {
+        // TODO some error handling for this case
+    }
+
     const string& ForwardGenerator::text() const { return text_; }
 } // namespace velocity::zsh

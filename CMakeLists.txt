@@ -4,17 +4,17 @@ project(velocity VERSION 0.0)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SRCS
-    src/segment/Segment.h
-    src/segment/visitor/SegmentVisitor.h
     src/color/ResetColor.cpp
     src/color/RGBColor.cpp
     src/color/TermColor.cpp
     src/color/Format.cpp
+    src/color/visitor/ANSICodeGenerator.cpp
     src/segment/StartSegment.cpp
     src/segment/TextSegment.cpp
     src/segment/EndSegment.cpp
     src/segment/CWDSegment.cpp
-    src/color/visitor/ANSICodeGenerator.cpp
+    src/segment/EnvironmentConditionalSegment.cpp
+    src/segment/visitor/EvalVisitor.cpp
     src/zsh/ForwardGenerator.cpp
     src/zsh/ReverseGenerator.cpp
     src/zsh/ColorCodeGenerator.cpp

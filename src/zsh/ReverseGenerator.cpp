@@ -40,5 +40,9 @@ namespace velocity::zsh {
         segment.next()->accept(*this);
     }
 
+    void ReverseGenerator::visit(ConditionalSegment&) {
+        // TODO some error handling for this case
+    }
+
     const string& ReverseGenerator::text() const { return text_; }
 } // namespace velocity::zsh

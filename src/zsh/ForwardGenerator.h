@@ -4,6 +4,7 @@
 #include <string>
 
 #include "segment/CWDSegment.h"
+#include "segment/ConditionalSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
@@ -11,6 +12,7 @@
 #include "zsh/ColorCodeGenerator.h"
 
 using std::string;
+using velocity::segment::ConditionalSegment;
 using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
 using velocity::segment::SegmentVisitor;
@@ -26,6 +28,7 @@ namespace velocity::zsh {
         virtual void visit(EndSegment& segment);
         virtual void visit(TextSegment& segment);
         virtual void visit(CWDSegment& segment);
+        virtual void visit(ConditionalSegment& segment);
 
         const string& text() const;
 

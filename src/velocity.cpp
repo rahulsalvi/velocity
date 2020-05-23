@@ -6,8 +6,10 @@
 #include "color/TermColor.h"
 #include "segment/CWDSegment.h"
 #include "segment/EndSegment.h"
+#include "segment/EnvironmentConditionalSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
+#include "segment/visitor/EvalVisitor.h"
 #include "zsh/ForwardGenerator.h"
 #include "zsh/ReverseGenerator.h"
 
@@ -18,6 +20,8 @@ using velocity::color::RGBColor;
 using velocity::color::TermColor;
 using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
+using velocity::segment::EnvironmentConditionalSegment;
+using velocity::segment::EvalVisitor;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
 using velocity::zsh::ForwardGenerator;
@@ -31,19 +35,40 @@ void prompt_forward() {
     auto term_blue   = make_shared<TermColor>("blue");
 
     auto start = make_shared<StartSegment>();
+    auto env_test =
+        make_shared<EnvironmentConditionalSegment>("TEST1", "", velocity::segment::NOT_EQUALS);
+    auto env_test2 =
+        make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
     auto hostinfo =
         make_shared<TextSegment>(Format(term_black, term_brcyan), "${USERNAME}@${HOST}", "", 0);
     auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue), "", "", 0);
     auto end = make_shared<EndSegment>();
 
-    start->set_next(hostinfo);
-    hostinfo->set_prev(start);
+    // AND
+    /* env_test->set_true_segment(env_test2); */
+    /* env_test->set_false_segment(cwd); */
+    /* env_test2->set_true_segment(hostinfo); */
+    /* env_test2->set_false_segment(cwd); */
+
+    // OR
+    env_test->set_true_segment(hostinfo);
+    env_test->set_false_segment(env_test2);
+    env_test2->set_true_segment(hostinfo);
+    env_test2->set_false_segment(cwd);
+
+    start->set_next(env_test);
+    env_test->set_prev(start);
+    env_test->set_next(env_test2);
+    env_test2->set_prev(env_test);
+    env_test2->set_next(hostinfo);
+    hostinfo->set_prev(env_test2);
     hostinfo->set_next(cwd);
     cwd->set_prev(hostinfo);
     cwd->set_next(end);
     end->set_prev(cwd);
 
-    cwd->eval();
+    EvalVisitor e;
+    start->accept(e);
 
     ForwardGenerator p;
     start->accept(p);
