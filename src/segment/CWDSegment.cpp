@@ -4,7 +4,9 @@
 
 #include "segment/CWDSegment.h"
 
+#ifndef CWD_BUF_SIZE
 #define CWD_BUF_SIZE 1024
+#endif
 
 namespace velocity::segment {
     CWDSegment::CWDSegment(Format format,

@@ -14,6 +14,7 @@ set(SRCS
     src/segment/EndSegment.cpp
     src/segment/CWDSegment.cpp
     src/segment/EnvironmentConditionalSegment.cpp
+    src/segment/GitRepoConditionalSegment.cpp
     src/segment/visitor/EvalVisitor.cpp
     src/zsh/ForwardGenerator.cpp
     src/zsh/ReverseGenerator.cpp
