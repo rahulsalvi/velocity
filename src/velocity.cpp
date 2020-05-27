@@ -5,6 +5,7 @@
 #include "color/RGBColor.h"
 #include "color/ResetColor.h"
 #include "color/TermColor.h"
+#include "color/TermColor256.h"
 #include "color/visitor/ANSIColorCodeGenerator.h"
 #include "color/visitor/ZshColorCodeGenerator.h"
 #include "segment/CWDSegment.h"
@@ -33,6 +34,7 @@ using std::make_shared;
 using velocity::color::ANSIColorCodeGenerator;
 using velocity::color::RGBColor;
 using velocity::color::TermColor;
+using velocity::color::TermColor256;
 using velocity::color::ZshColorCodeGenerator;
 using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
@@ -59,6 +61,8 @@ auto term_brcyan = make_shared<TermColor>("brcyan");
 auto term_black  = make_shared<TermColor>("black");
 auto term_blue   = make_shared<TermColor>("blue");
 auto term_green  = make_shared<TermColor>("green");
+
+auto term_42 = make_shared<TermColor256>(42);
 
 auto normal_style           = make_shared<NormalStyle>();
 auto bold_style             = make_shared<BoldStyle>();

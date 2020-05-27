@@ -7,6 +7,7 @@ using std::string;
 
 namespace velocity::color {
     class TermColor;
+    class TermColor256;
     class RGBColor;
     class ResetColor;
 
@@ -16,6 +17,9 @@ namespace velocity::color {
 
         virtual string visit_foreground(TermColor& color) = 0;
         virtual string visit_background(TermColor& color) = 0;
+
+        virtual string visit_foreground(TermColor256& color) = 0;
+        virtual string visit_background(TermColor256& color) = 0;
 
         virtual string visit_foreground(RGBColor& color) = 0;
         virtual string visit_background(RGBColor& color) = 0;

@@ -7,6 +7,7 @@ set(SRCS
     src/color/ResetColor.cpp
     src/color/RGBColor.cpp
     src/color/TermColor.cpp
+    src/color/TermColor256.cpp
     src/color/visitor/ANSIColorCodeGenerator.cpp
     src/color/visitor/ZshColorCodeGenerator.cpp
     src/style/NormalStyle.cpp

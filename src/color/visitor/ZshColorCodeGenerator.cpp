@@ -13,6 +13,14 @@ namespace velocity::color {
         return "%{" + ANSIColorCodeGenerator::visit_background(color) + "%}";
     }
 
+    string ZshColorCodeGenerator::visit_foreground(TermColor256& color) {
+        return "%{" + ANSIColorCodeGenerator::visit_foreground(color) + "%}";
+    }
+
+    string ZshColorCodeGenerator::visit_background(TermColor256& color) {
+        return "%{" + ANSIColorCodeGenerator::visit_background(color) + "%}";
+    }
+
     string ZshColorCodeGenerator::visit_foreground(RGBColor& color) {
         return "%{" + ANSIColorCodeGenerator::visit_foreground(color) + "%}";
     }

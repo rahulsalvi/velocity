@@ -51,6 +51,14 @@ namespace velocity::color {
         return "\e[" + color2bgcode[color.color_str()] + "m";
     }
 
+    string ANSIColorCodeGenerator::visit_foreground(TermColor256& color) {
+        return "\e[38;5;" + to_string(color.color()) + "m";
+    }
+
+    string ANSIColorCodeGenerator::visit_background(TermColor256& color) {
+        return "\e[48;5;" + to_string(color.color()) + "m";
+    }
+
     string ANSIColorCodeGenerator::visit_foreground(RGBColor& color) {
         return "\e[38;2;" + rgb_code_base(color) + "m";
     }
