@@ -10,7 +10,7 @@ namespace velocity::color {
 
     class Color {
         public:
-        virtual ~Color(){};
+        virtual ~Color() {}
         virtual string accept_foreground(ColorVisitor& visitor) = 0;
         virtual string accept_background(ColorVisitor& visitor) = 0;
     };

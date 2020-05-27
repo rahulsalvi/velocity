@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 
+#include "Format.h"
 #include "color/RGBColor.h"
 #include "color/ResetColor.h"
 #include "color/TermColor.h"
@@ -11,6 +12,8 @@
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/EvalVisitor.h"
+#include "style/BoldStyle.h"
+#include "style/NormalStyle.h"
 #include "zsh/ForwardGenerator.h"
 #include "zsh/ReverseGenerator.h"
 
@@ -27,6 +30,8 @@ using velocity::segment::EvalVisitor;
 using velocity::segment::GitRepoConditionalSegment;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
+using velocity::style::BoldStyle;
+using velocity::style::NormalStyle;
 using velocity::zsh::ForwardGenerator;
 using velocity::zsh::ReverseGenerator;
 
@@ -37,18 +42,20 @@ void prompt_forward() {
     auto term_black  = make_shared<TermColor>("black");
     auto term_blue   = make_shared<TermColor>("blue");
     auto term_green  = make_shared<TermColor>("green");
+    auto normal      = make_shared<NormalStyle>();
+    auto bold        = make_shared<BoldStyle>();
 
     auto start = make_shared<StartSegment>();
     auto env_test =
         make_shared<EnvironmentConditionalSegment>("TEST1", "", velocity::segment::NOT_EQUALS);
     auto env_test2 =
         make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
-    auto hostinfo =
-        make_shared<TextSegment>(Format(term_black, term_brcyan), "${USERNAME}@${HOST}", "", 0);
-    auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue), "", "", 0);
+    auto hostinfo = make_shared<TextSegment>(
+        Format(term_black, term_brcyan, normal), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal), "", "", 0);
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git         = make_shared<TextSegment>(Format(term_black, term_green), "GIT", "", 0);
-    auto end         = make_shared<EndSegment>();
+    auto git = make_shared<TextSegment>(Format(term_black, term_green, bold), "GIT", "", 0);
+    auto end = make_shared<EndSegment>();
 
     // AND
     /* env_test->set_true_segment(env_test2); */
@@ -92,11 +99,12 @@ void prompt_reverse() {
     auto term_brcyan = make_shared<TermColor>("brcyan");
     auto term_black  = make_shared<TermColor>("black");
     auto term_blue   = make_shared<TermColor>("blue");
+    auto normal      = make_shared<NormalStyle>();
 
-    auto start = make_shared<StartSegment>();
-    auto hostinfo =
-        make_shared<TextSegment>(Format(term_black, term_brcyan), "${USERNAME}@${HOST}", "", 0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue), "", "", 0);
+    auto start    = make_shared<StartSegment>();
+    auto hostinfo = make_shared<TextSegment>(
+        Format(term_black, term_brcyan, normal), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal), "", "", 0);
     auto end = make_shared<EndSegment>();
 
     start->set_next(hostinfo);

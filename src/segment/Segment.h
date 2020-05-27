@@ -4,11 +4,11 @@
 #include <memory>
 #include <string>
 
-#include "color/Format.h"
+#include "Format.h"
 
 using std::shared_ptr;
 using std::string;
-using velocity::color::Format;
+using velocity::Format;
 
 namespace velocity::segment {
     class SegmentVisitor;

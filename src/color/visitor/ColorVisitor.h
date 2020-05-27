@@ -12,7 +12,7 @@ namespace velocity::color {
 
     class ColorVisitor {
         public:
-        ~ColorVisitor(){};
+        ~ColorVisitor() {}
 
         virtual string visit_foreground(TermColor& color) = 0;
         virtual string visit_background(TermColor& color) = 0;

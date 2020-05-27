@@ -6,9 +6,11 @@
 #include "color/ResetColor.h"
 #include "segment/Segment.h"
 #include "segment/visitor/SegmentVisitor.h"
+#include "style/NormalStyle.h"
 
 using std::make_shared;
 using velocity::color::ResetColor;
+using velocity::style::NormalStyle;
 
 namespace velocity::segment {
     enum Condition {
@@ -22,7 +24,12 @@ namespace velocity::segment {
     class ConditionalSegment : public Segment {
         public:
         ConditionalSegment()
-            : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>()), "", "", 0) {}
+            : Segment(Format(make_shared<ResetColor>(),
+                             make_shared<ResetColor>(),
+                             make_shared<NormalStyle>()),
+                      "",
+                      "",
+                      0) {}
         virtual ~ConditionalSegment() {}
 
         virtual void accept(SegmentVisitor& visitor) = 0;

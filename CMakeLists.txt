@@ -7,8 +7,10 @@ set(SRCS
     src/color/ResetColor.cpp
     src/color/RGBColor.cpp
     src/color/TermColor.cpp
-    src/color/Format.cpp
     src/color/visitor/ANSICodeGenerator.cpp
+    src/style/BoldStyle.cpp
+    src/style/NormalStyle.cpp
+    src/Format.cpp
     src/segment/StartSegment.cpp
     src/segment/TextSegment.cpp
     src/segment/EndSegment.cpp
