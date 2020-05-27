@@ -5,6 +5,8 @@
 #include "color/RGBColor.h"
 #include "color/ResetColor.h"
 #include "color/TermColor.h"
+#include "color/visitor/ANSIColorCodeGenerator.h"
+#include "color/visitor/ZshColorCodeGenerator.h"
 #include "segment/CWDSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/EnvironmentConditionalSegment.h"
@@ -12,28 +14,30 @@
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/EvalVisitor.h"
+#include "segment/visitor/ForwardGenerator.h"
+#include "segment/visitor/ReverseGenerator.h"
 #include "style/BoldStyle.h"
 #include "style/NormalStyle.h"
-#include "zsh/ForwardGenerator.h"
-#include "zsh/ReverseGenerator.h"
 
 using std::cerr;
 using std::cout;
 using std::endl;
 using std::make_shared;
+using velocity::color::ANSIColorCodeGenerator;
 using velocity::color::RGBColor;
 using velocity::color::TermColor;
+using velocity::color::ZshColorCodeGenerator;
 using velocity::segment::CWDSegment;
 using velocity::segment::EndSegment;
 using velocity::segment::EnvironmentConditionalSegment;
 using velocity::segment::EvalVisitor;
+using velocity::segment::ForwardGenerator;
 using velocity::segment::GitRepoConditionalSegment;
+using velocity::segment::ReverseGenerator;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
 using velocity::style::BoldStyle;
 using velocity::style::NormalStyle;
-using velocity::zsh::ForwardGenerator;
-using velocity::zsh::ReverseGenerator;
 
 #include <chrono>
 
@@ -90,7 +94,10 @@ void prompt_forward() {
     EvalVisitor e;
     start->accept(e);
 
-    ForwardGenerator p;
+    /* auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>(); */
+    auto zsh_color_code_generator = make_shared<ZshColorCodeGenerator>();
+
+    ForwardGenerator p(zsh_color_code_generator);
     start->accept(p);
     cout << p.text();
 }
@@ -116,7 +123,10 @@ void prompt_reverse() {
 
     cwd->eval();
 
-    ReverseGenerator p;
+    auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>();
+    auto zsh_color_code_generator  = make_shared<ZshColorCodeGenerator>();
+
+    ReverseGenerator p(zsh_color_code_generator);
     start->accept(p);
     cout << p.text();
 }

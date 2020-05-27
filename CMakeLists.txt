@@ -7,7 +7,8 @@ set(SRCS
     src/color/ResetColor.cpp
     src/color/RGBColor.cpp
     src/color/TermColor.cpp
-    src/color/visitor/ANSICodeGenerator.cpp
+    src/color/visitor/ANSIColorCodeGenerator.cpp
+    src/color/visitor/ZshColorCodeGenerator.cpp
     src/style/BoldStyle.cpp
     src/style/NormalStyle.cpp
     src/Format.cpp
@@ -18,9 +19,8 @@ set(SRCS
     src/segment/EnvironmentConditionalSegment.cpp
     src/segment/GitRepoConditionalSegment.cpp
     src/segment/visitor/EvalVisitor.cpp
-    src/zsh/ForwardGenerator.cpp
-    src/zsh/ReverseGenerator.cpp
-    src/zsh/ColorCodeGenerator.cpp
+    src/segment/visitor/ForwardGenerator.cpp
+    src/segment/visitor/ReverseGenerator.cpp
     src/velocity.cpp)
 
 set(CMAKE_CXX_STANDARD 17)

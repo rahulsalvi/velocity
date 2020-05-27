@@ -1,28 +1,23 @@
-#ifndef ZSHFORWARDGENERATOR_H
-#define ZSHFORWARDGENERATOR_H
+#ifndef FORWARDGENERATOR_H
+#define FORWARDGENERATOR_H
 
 #include <string>
 
+#include "color/visitor/ColorVisitor.h"
 #include "segment/CWDSegment.h"
 #include "segment/ConditionalSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
-#include "zsh/ColorCodeGenerator.h"
 
 using std::string;
-using velocity::segment::ConditionalSegment;
-using velocity::segment::CWDSegment;
-using velocity::segment::EndSegment;
-using velocity::segment::SegmentVisitor;
-using velocity::segment::StartSegment;
-using velocity::segment::TextSegment;
+using velocity::color::ColorVisitor;
 
-namespace velocity::zsh {
+namespace velocity::segment {
     class ForwardGenerator : public SegmentVisitor {
         public:
-        ForwardGenerator();
+        ForwardGenerator(shared_ptr<ColorVisitor> color_generator);
         ~ForwardGenerator();
         virtual void visit(StartSegment& segment);
         virtual void visit(EndSegment& segment);
@@ -33,9 +28,9 @@ namespace velocity::zsh {
         const string& text() const;
 
         private:
-        string             text_;
-        ColorCodeGenerator color_generator_;
+        string                   text_;
+        shared_ptr<ColorVisitor> color_generator_;
     };
-} // namespace velocity::zsh
+} // namespace velocity::segment
 
-#endif // ZSHFORWARDGENERATOR_H
+#endif // FORWARDGENERATOR_H

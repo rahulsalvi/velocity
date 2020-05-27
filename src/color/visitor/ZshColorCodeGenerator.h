@@ -1,18 +1,17 @@
-#ifndef ANSICODEGENERATORH
-#define ANSICODEGENERATORH
-
-#include <string>
+#ifndef ZSHCOLORCODEGENERATOR_H
+#define ZSHCOLORCODEGENERATOR_H
 
 #include "color/RGBColor.h"
 #include "color/ResetColor.h"
 #include "color/TermColor.h"
+#include "color/visitor/ANSIColorCodeGenerator.h"
 #include "color/visitor/ColorVisitor.h"
 
 namespace velocity::color {
-    class ANSICodeGenerator : public ColorVisitor {
+    class ZshColorCodeGenerator : public ANSIColorCodeGenerator {
         public:
-        ANSICodeGenerator();
-        virtual ~ANSICodeGenerator();
+        ZshColorCodeGenerator();
+        virtual ~ZshColorCodeGenerator();
 
         virtual string visit_foreground(TermColor& color);
         virtual string visit_background(TermColor& color);
@@ -22,10 +21,7 @@ namespace velocity::color {
 
         virtual string visit_foreground(ResetColor& color);
         virtual string visit_background(ResetColor& color);
-
-        private:
-        string rgb_code_base(RGBColor& color);
     };
 } // namespace velocity::color
 
-#endif // ANSICODEGENERATORH
+#endif // ZSHCOLORCODEGENERATOR_H
