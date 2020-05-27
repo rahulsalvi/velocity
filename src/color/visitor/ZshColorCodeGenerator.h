@@ -13,14 +13,14 @@ namespace velocity::color {
         ZshColorCodeGenerator();
         virtual ~ZshColorCodeGenerator();
 
-        virtual string visit_foreground(TermColor& color);
-        virtual string visit_background(TermColor& color);
+        virtual string visit_foreground(TermColor& color) override;
+        virtual string visit_background(TermColor& color) override;
 
-        virtual string visit_foreground(RGBColor& color);
-        virtual string visit_background(RGBColor& color);
+        virtual string visit_foreground(RGBColor& color) override;
+        virtual string visit_background(RGBColor& color) override;
 
-        virtual string visit_foreground(ResetColor& color);
-        virtual string visit_background(ResetColor& color);
+        virtual string visit_foreground(ResetColor& color) override;
+        virtual string visit_background(ResetColor& color) override;
     };
 } // namespace velocity::color
 
