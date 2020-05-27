@@ -10,14 +10,17 @@
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
+#include "style/visitor/StyleVisitor.h"
 
 using std::string;
 using velocity::color::ColorVisitor;
+using velocity::style::StyleVisitor;
 
 namespace velocity::segment {
     class ForwardGenerator : public SegmentVisitor {
         public:
-        ForwardGenerator(shared_ptr<ColorVisitor> color_generator);
+        ForwardGenerator(shared_ptr<ColorVisitor> color_generator,
+                         shared_ptr<StyleVisitor> style_generator);
         ~ForwardGenerator();
         virtual void visit(StartSegment& segment);
         virtual void visit(EndSegment& segment);
@@ -30,6 +33,7 @@ namespace velocity::segment {
         private:
         string                   text_;
         shared_ptr<ColorVisitor> color_generator_;
+        shared_ptr<StyleVisitor> style_generator_;
     };
 } // namespace velocity::segment
 

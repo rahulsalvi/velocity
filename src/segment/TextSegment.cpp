@@ -2,7 +2,7 @@
 
 namespace velocity::segment {
     TextSegment::TextSegment(Format format, string text, string separator, int priority)
-        : Segment(format, " " + text + " ", separator, priority) {}
+        : Segment(format, text, separator, priority) {}
 
     TextSegment::~TextSegment() {}
 

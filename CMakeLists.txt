@@ -9,8 +9,15 @@ set(SRCS
     src/color/TermColor.cpp
     src/color/visitor/ANSIColorCodeGenerator.cpp
     src/color/visitor/ZshColorCodeGenerator.cpp
-    src/style/BoldStyle.cpp
     src/style/NormalStyle.cpp
+    src/style/BoldStyle.cpp
+    src/style/FaintStyle.cpp
+    src/style/ItalicStyle.cpp
+    src/style/UnderlineStyle.cpp
+    src/style/DoubleUnderlineStyle.cpp
+    src/style/StrikethroughStyle.cpp
+    src/style/visitor/ANSIStyleCodeGenerator.cpp
+    src/style/visitor/ZshStyleCodeGenerator.cpp
     src/Format.cpp
     src/segment/StartSegment.cpp
     src/segment/TextSegment.cpp

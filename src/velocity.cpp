@@ -17,7 +17,14 @@
 #include "segment/visitor/ForwardGenerator.h"
 #include "segment/visitor/ReverseGenerator.h"
 #include "style/BoldStyle.h"
+#include "style/DoubleUnderlineStyle.h"
+#include "style/FaintStyle.h"
+#include "style/ItalicStyle.h"
 #include "style/NormalStyle.h"
+#include "style/StrikethroughStyle.h"
+#include "style/UnderlineStyle.h"
+#include "style/visitor/ANSIStyleCodeGenerator.h"
+#include "style/visitor/ZshStyleCodeGenerator.h"
 
 using std::cerr;
 using std::cout;
@@ -36,29 +43,48 @@ using velocity::segment::GitRepoConditionalSegment;
 using velocity::segment::ReverseGenerator;
 using velocity::segment::StartSegment;
 using velocity::segment::TextSegment;
+using velocity::style::ANSIStyleCodeGenerator;
 using velocity::style::BoldStyle;
+using velocity::style::DoubleUnderlineStyle;
+using velocity::style::FaintStyle;
+using velocity::style::ItalicStyle;
 using velocity::style::NormalStyle;
+using velocity::style::StrikethroughStyle;
+using velocity::style::UnderlineStyle;
+using velocity::style::ZshStyleCodeGenerator;
 
 #include <chrono>
 
-void prompt_forward() {
-    auto term_brcyan = make_shared<TermColor>("brcyan");
-    auto term_black  = make_shared<TermColor>("black");
-    auto term_blue   = make_shared<TermColor>("blue");
-    auto term_green  = make_shared<TermColor>("green");
-    auto normal      = make_shared<NormalStyle>();
-    auto bold        = make_shared<BoldStyle>();
+auto term_brcyan = make_shared<TermColor>("brcyan");
+auto term_black  = make_shared<TermColor>("black");
+auto term_blue   = make_shared<TermColor>("blue");
+auto term_green  = make_shared<TermColor>("green");
 
+auto normal_style           = make_shared<NormalStyle>();
+auto bold_style             = make_shared<BoldStyle>();
+auto faint_style            = make_shared<FaintStyle>();
+auto italic_style           = make_shared<ItalicStyle>();
+auto underline_style        = make_shared<UnderlineStyle>();
+auto double_underline_style = make_shared<DoubleUnderlineStyle>();
+auto strikethrough_style    = make_shared<StrikethroughStyle>();
+
+auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>();
+auto ansi_style_code_generator = make_shared<ANSIStyleCodeGenerator>();
+
+auto zsh_color_code_generator = make_shared<ZshColorCodeGenerator>();
+auto zsh_style_code_generator = make_shared<ZshStyleCodeGenerator>();
+
+void prompt_forward() {
     auto start = make_shared<StartSegment>();
     auto env_test =
         make_shared<EnvironmentConditionalSegment>("TEST1", "", velocity::segment::NOT_EQUALS);
     auto env_test2 =
         make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
     auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, normal), "${USERNAME}@${HOST}", "", 0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal), "", "", 0);
+        Format(term_black, term_brcyan, normal_style), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal_style), "", "", 0);
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git = make_shared<TextSegment>(Format(term_black, term_green, bold), "GIT", "", 0);
+    auto git = make_shared<TextSegment>(Format(term_black, term_green, bold_style), "GIT", "", 0);
     auto end = make_shared<EndSegment>();
 
     // AND
@@ -94,24 +120,18 @@ void prompt_forward() {
     EvalVisitor e;
     start->accept(e);
 
-    /* auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>(); */
-    auto zsh_color_code_generator = make_shared<ZshColorCodeGenerator>();
+    /* ForwardGenerator p(ansi_color_code_generator, ansi_style_code_generator); */
+    ForwardGenerator p(zsh_color_code_generator, zsh_style_code_generator);
 
-    ForwardGenerator p(zsh_color_code_generator);
     start->accept(p);
     cout << p.text();
 }
 
 void prompt_reverse() {
-    auto term_brcyan = make_shared<TermColor>("brcyan");
-    auto term_black  = make_shared<TermColor>("black");
-    auto term_blue   = make_shared<TermColor>("blue");
-    auto normal      = make_shared<NormalStyle>();
-
     auto start    = make_shared<StartSegment>();
     auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, normal), "${USERNAME}@${HOST}", "", 0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal), "", "", 0);
+        Format(term_black, term_brcyan, strikethrough_style), "${USERNAME}@${HOST}", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal_style), "", "", 0);
     auto end = make_shared<EndSegment>();
 
     start->set_next(hostinfo);
@@ -123,10 +143,9 @@ void prompt_reverse() {
 
     cwd->eval();
 
-    auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>();
-    auto zsh_color_code_generator  = make_shared<ZshColorCodeGenerator>();
+    /* ReverseGenerator p(ansi_color_code_generator, ansi_style_code_generator); */
+    ReverseGenerator p(zsh_color_code_generator, zsh_style_code_generator);
 
-    ReverseGenerator p(zsh_color_code_generator);
     start->accept(p);
     cout << p.text();
 }

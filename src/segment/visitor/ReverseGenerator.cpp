@@ -1,14 +1,18 @@
 #include "segment/visitor/ReverseGenerator.h"
 
 namespace velocity::segment {
-    ReverseGenerator::ReverseGenerator(shared_ptr<ColorVisitor> color_generator)
-        : text_(""), color_generator_(color_generator) {}
+    ReverseGenerator::ReverseGenerator(shared_ptr<ColorVisitor> color_generator,
+                                       shared_ptr<StyleVisitor> style_generator)
+        : text_(""), color_generator_(color_generator), style_generator_(style_generator) {}
 
     ReverseGenerator::~ReverseGenerator() {}
 
     void ReverseGenerator::visit(StartSegment& segment) {
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
+        text_ += segment.format().style()->accept_start(*style_generator_);
+        text_ += " ";
+        text_ += segment.format().style()->accept_end(*style_generator_);
         segment.next()->accept(*this);
     }
 
@@ -22,7 +26,11 @@ namespace velocity::segment {
         text_ += segment.separator();
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
+        text_ += " ";
+        text_ += segment.format().style()->accept_start(*style_generator_);
         text_ += segment.text();
+        text_ += segment.format().style()->accept_end(*style_generator_);
+        text_ += " ";
         segment.next()->accept(*this);
     }
 
@@ -35,7 +43,11 @@ namespace velocity::segment {
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
         for (auto it = dirs.begin(); it != dirs.end(); ++it) {
-            text_ += " " + *it + " ";
+            text_ += " ";
+            text_ += segment.format().style()->accept_start(*style_generator_);
+            text_ += *it;
+            text_ += segment.format().style()->accept_end(*style_generator_);
+            text_ += " ";
             if (it != dirs.end() - 1) { text_ += inner_separator; }
         }
         segment.next()->accept(*this);
