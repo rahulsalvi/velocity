@@ -1,17 +1,17 @@
-#ifndef NORMALSTYLE_H
-#define NORMALSTYLE_H
+#ifndef RESETSTYLE_H
+#define RESETSTYLE_H
 
 #include "style/Style.h"
 #include "style/visitor/StyleVisitor.h"
 
 namespace velocity::style {
-    class NormalStyle : public Style {
+    class ResetStyle : public Style {
         public:
-        NormalStyle();
-        virtual ~NormalStyle();
+        ResetStyle();
+        virtual ~ResetStyle();
         virtual string accept_start(StyleVisitor& visitor);
         virtual string accept_end(StyleVisitor& visitor);
     };
 } // namespace velocity::style
 
-#endif // NORMALSTYLE_H
+#endif // RESETSTYLE_H

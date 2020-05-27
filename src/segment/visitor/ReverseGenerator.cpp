@@ -10,9 +10,10 @@ namespace velocity::segment {
     void ReverseGenerator::visit(StartSegment& segment) {
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
-        text_ += segment.format().style()->accept_start(*style_generator_);
+        auto styles = segment.format().style();
+        for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
         text_ += " ";
-        text_ += segment.format().style()->accept_end(*style_generator_);
+        for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
         segment.next()->accept(*this);
     }
 
@@ -27,9 +28,10 @@ namespace velocity::segment {
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
         text_ += " ";
-        text_ += segment.format().style()->accept_start(*style_generator_);
+        auto styles = segment.format().style();
+        for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
         text_ += segment.text();
-        text_ += segment.format().style()->accept_end(*style_generator_);
+        for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
         text_ += " ";
         segment.next()->accept(*this);
     }
@@ -42,13 +44,14 @@ namespace velocity::segment {
         text_ += segment.separator();
         text_ += segment.format().foreground()->accept_foreground(*color_generator_);
         text_ += segment.format().background()->accept_background(*color_generator_);
-        for (auto it = dirs.begin(); it != dirs.end(); ++it) {
+        for (auto dir = dirs.begin(); dir != dirs.end(); ++dir) {
             text_ += " ";
-            text_ += segment.format().style()->accept_start(*style_generator_);
-            text_ += *it;
-            text_ += segment.format().style()->accept_end(*style_generator_);
+            auto styles = segment.format().style();
+            for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
+            text_ += *dir;
+            for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
             text_ += " ";
-            if (it != dirs.end() - 1) { text_ += inner_separator; }
+            if (dir != dirs.end() - 1) { text_ += inner_separator; }
         }
         segment.next()->accept(*this);
     }

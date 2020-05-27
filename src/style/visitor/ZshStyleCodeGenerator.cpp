@@ -52,4 +52,12 @@ namespace velocity::style {
     string ZshStyleCodeGenerator::visit_end(StrikethroughStyle& style) {
         return "%{" + ANSIStyleCodeGenerator::visit_end(style) + "%}";
     }
+
+    string ZshStyleCodeGenerator::visit_start(ResetStyle& style) {
+        return "%{" + ANSIStyleCodeGenerator::visit_start(style) + "%}";
+    }
+
+    string ZshStyleCodeGenerator::visit_end(ResetStyle& style) {
+        return "%{" + ANSIStyleCodeGenerator::visit_end(style) + "%}";
+    }
 } // namespace velocity::style

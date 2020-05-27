@@ -5,10 +5,6 @@ namespace velocity::style {
 
     ANSIStyleCodeGenerator::~ANSIStyleCodeGenerator() {}
 
-    string ANSIStyleCodeGenerator::visit_start(NormalStyle&) { return ""; }
-
-    string ANSIStyleCodeGenerator::visit_end(NormalStyle&) { return ""; }
-
     string ANSIStyleCodeGenerator::visit_start(BoldStyle&) { return "\e[1m"; }
 
     string ANSIStyleCodeGenerator::visit_end(BoldStyle&) { return "\e[22m"; }
@@ -32,4 +28,8 @@ namespace velocity::style {
     string ANSIStyleCodeGenerator::visit_start(StrikethroughStyle&) { return "\e[9m"; }
 
     string ANSIStyleCodeGenerator::visit_end(StrikethroughStyle&) { return "\e[29m"; }
+
+    string ANSIStyleCodeGenerator::visit_start(ResetStyle&) { return "\e[22;23;24;29m"; }
+
+    string ANSIStyleCodeGenerator::visit_end(ResetStyle&) { return "\e[22;23;24;29m"; }
 } // namespace velocity::style

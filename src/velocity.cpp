@@ -21,7 +21,7 @@
 #include "style/DoubleUnderlineStyle.h"
 #include "style/FaintStyle.h"
 #include "style/ItalicStyle.h"
-#include "style/NormalStyle.h"
+#include "style/ResetStyle.h"
 #include "style/StrikethroughStyle.h"
 #include "style/UnderlineStyle.h"
 #include "style/visitor/ANSIStyleCodeGenerator.h"
@@ -50,7 +50,7 @@ using velocity::style::BoldStyle;
 using velocity::style::DoubleUnderlineStyle;
 using velocity::style::FaintStyle;
 using velocity::style::ItalicStyle;
-using velocity::style::NormalStyle;
+using velocity::style::ResetStyle;
 using velocity::style::StrikethroughStyle;
 using velocity::style::UnderlineStyle;
 using velocity::style::ZshStyleCodeGenerator;
@@ -64,13 +64,13 @@ auto term_green  = make_shared<TermColor>("green");
 
 auto term_42 = make_shared<TermColor256>(42);
 
-auto normal_style           = make_shared<NormalStyle>();
 auto bold_style             = make_shared<BoldStyle>();
 auto faint_style            = make_shared<FaintStyle>();
 auto italic_style           = make_shared<ItalicStyle>();
 auto underline_style        = make_shared<UnderlineStyle>();
 auto double_underline_style = make_shared<DoubleUnderlineStyle>();
 auto strikethrough_style    = make_shared<StrikethroughStyle>();
+auto reset_style            = make_shared<ResetStyle>();
 
 auto ansi_color_code_generator = make_shared<ANSIColorCodeGenerator>();
 auto ansi_style_code_generator = make_shared<ANSIStyleCodeGenerator>();
@@ -85,10 +85,11 @@ void prompt_forward() {
     auto env_test2 =
         make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
     auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, normal_style), "${USERNAME}@${HOST}", "", 0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal_style), "", "", 0);
+        Format(term_black, term_brcyan, {}), "${USERNAME}@${HOST}", "", 0);
+    auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue, {}), "", "", 0);
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git = make_shared<TextSegment>(Format(term_black, term_green, bold_style), "GIT", "", 0);
+    auto git         = make_shared<TextSegment>(
+        Format(term_black, term_green, {bold_style, italic_style}), "GIT", "", 0);
     auto end = make_shared<EndSegment>();
 
     // AND
@@ -134,8 +135,11 @@ void prompt_forward() {
 void prompt_reverse() {
     auto start    = make_shared<StartSegment>();
     auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, strikethrough_style), "${USERNAME}@${HOST}", "", 0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, normal_style), "", "", 0);
+        Format(term_black, term_brcyan, {strikethrough_style, italic_style}),
+        "${USERNAME}@${HOST}",
+        "",
+        0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, {bold_style}), "", "", 0);
     auto end = make_shared<EndSegment>();
 
     start->set_next(hostinfo);

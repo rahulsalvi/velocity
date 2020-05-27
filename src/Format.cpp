@@ -1,9 +1,9 @@
 #include "Format.h"
 
 namespace velocity {
-    Format::Format(shared_ptr<Color> foreground,
-                   shared_ptr<Color> background,
-                   shared_ptr<Style> style)
+    Format::Format(shared_ptr<Color>         foreground,
+                   shared_ptr<Color>         background,
+                   vector<shared_ptr<Style>> style)
         : foreground_(foreground), background_(background), style_(style) {}
 
     Format::~Format() {}
@@ -12,11 +12,11 @@ namespace velocity {
 
     void Format::set_background(shared_ptr<Color> background) { background_ = background; }
 
-    void Format::set_style(shared_ptr<Style> style) { style_ = style; }
+    void Format::set_style(vector<shared_ptr<Style>> style) { style_ = style; }
 
     shared_ptr<Color> Format::foreground() const { return foreground_; }
 
     shared_ptr<Color> Format::background() const { return background_; }
 
-    shared_ptr<Style> Format::style() const { return style_; }
+    const vector<shared_ptr<Style>>& Format::style() const { return style_; }
 } // namespace velocity

@@ -7,7 +7,7 @@
 #include "style/DoubleUnderlineStyle.h"
 #include "style/FaintStyle.h"
 #include "style/ItalicStyle.h"
-#include "style/NormalStyle.h"
+#include "style/ResetStyle.h"
 #include "style/StrikethroughStyle.h"
 #include "style/UnderlineStyle.h"
 #include "style/visitor/StyleVisitor.h"
@@ -17,9 +17,6 @@ namespace velocity::style {
         public:
         ANSIStyleCodeGenerator();
         virtual ~ANSIStyleCodeGenerator();
-
-        virtual string visit_start(NormalStyle& style) override;
-        virtual string visit_end(NormalStyle& style) override;
 
         virtual string visit_start(BoldStyle& style) override;
         virtual string visit_end(BoldStyle& style) override;
@@ -38,6 +35,9 @@ namespace velocity::style {
 
         virtual string visit_start(StrikethroughStyle& style) override;
         virtual string visit_end(StrikethroughStyle& style) override;
+
+        virtual string visit_start(ResetStyle& style) override;
+        virtual string visit_end(ResetStyle& style) override;
     };
 } // namespace velocity::style
 
