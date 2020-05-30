@@ -3,55 +3,50 @@
 namespace velocity::segment {
     ReverseGenerator::ReverseGenerator(shared_ptr<ColorVisitor> color_generator,
                                        shared_ptr<StyleVisitor> style_generator)
-        : text_(""), color_generator_(color_generator), style_generator_(style_generator) {}
+        : TextGenerator(color_generator, style_generator) {}
 
     ReverseGenerator::~ReverseGenerator() {}
 
     void ReverseGenerator::visit(StartSegment& segment) {
-        text_ += segment.format().foreground()->accept_foreground(*color_generator_);
-        text_ += segment.format().background()->accept_background(*color_generator_);
-        auto styles = segment.format().style();
-        for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
-        text_ += " ";
-        for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
+        emit_foreground_code(segment.format().foreground());
+        emit_background_code(segment.format().background());
+        emit_style_start_code(segment.format().style());
+        emit_text(" ");
+        emit_style_end_code(segment.format().style());
         segment.next()->accept(*this);
     }
 
     void ReverseGenerator::visit(EndSegment& segment) {
-        text_ += segment.format().foreground()->accept_foreground(*color_generator_);
-        text_ += segment.format().background()->accept_background(*color_generator_);
+        emit_foreground_code(segment.format().foreground());
+        emit_background_code(segment.format().background());
     }
 
     void ReverseGenerator::visit(TextSegment& segment) {
-        text_ += segment.format().background()->accept_foreground(*color_generator_);
-        text_ += segment.separator();
-        text_ += segment.format().foreground()->accept_foreground(*color_generator_);
-        text_ += segment.format().background()->accept_background(*color_generator_);
-        text_ += " ";
-        auto styles = segment.format().style();
-        for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
-        text_ += segment.text();
-        for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
-        text_ += " ";
+        emit_foreground_code(segment.format().background());
+        emit_text(segment.separator());
+        emit_foreground_code(segment.format().foreground());
+        emit_background_code(segment.format().background());
+        emit_style_start_code(segment.format().style());
+        emit_text(segment.text());
+        emit_style_end_code(segment.format().style());
+        emit_text(" ");
         segment.next()->accept(*this);
     }
 
     void ReverseGenerator::visit(CWDSegment& segment) {
-        auto dirs            = segment.directories();
-        auto inner_separator = segment.inner_separator();
+        auto dirs = segment.directories();
 
-        text_ += segment.format().background()->accept_foreground(*color_generator_);
-        text_ += segment.separator();
-        text_ += segment.format().foreground()->accept_foreground(*color_generator_);
-        text_ += segment.format().background()->accept_background(*color_generator_);
+        emit_foreground_code(segment.format().background());
+        emit_text(segment.separator());
+        emit_foreground_code(segment.format().foreground());
+        emit_background_code(segment.format().background());
         for (auto dir = dirs.begin(); dir != dirs.end(); ++dir) {
-            text_ += " ";
-            auto styles = segment.format().style();
-            for (auto style : styles) { text_ += style->accept_start(*style_generator_); }
-            text_ += *dir;
-            for (auto style : styles) { text_ += style->accept_end(*style_generator_); }
-            text_ += " ";
-            if (dir != dirs.end() - 1) { text_ += inner_separator; }
+            emit_text(" ");
+            emit_style_start_code(segment.format().style());
+            emit_text(*dir);
+            emit_style_end_code(segment.format().style());
+            emit_text(" ");
+            if (dir != dirs.end() - 1) { emit_text(segment.inner_separator()); }
         }
         segment.next()->accept(*this);
     }
@@ -59,6 +54,4 @@ namespace velocity::segment {
     void ReverseGenerator::visit(ConditionalSegment&) {
         // TODO some error handling for this case
     }
-
-    const string& ReverseGenerator::text() const { return text_; }
 } // namespace velocity::segment

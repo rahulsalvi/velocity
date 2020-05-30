@@ -27,6 +27,7 @@ set(SRCS
     src/segment/EnvironmentConditionalSegment.cpp
     src/segment/GitRepoConditionalSegment.cpp
     src/segment/visitor/EvalVisitor.cpp
+    src/segment/visitor/TextGenerator.cpp
     src/segment/visitor/ForwardGenerator.cpp
     src/segment/visitor/ReverseGenerator.cpp
     src/velocity.cpp)

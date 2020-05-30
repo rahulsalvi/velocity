@@ -10,7 +10,7 @@ namespace velocity::segment {
 
     class SegmentVisitor {
         public:
-        ~SegmentVisitor(){};
+        ~SegmentVisitor() {}
         virtual void visit(StartSegment& segment)       = 0;
         virtual void visit(EndSegment& segment)         = 0;
         virtual void visit(TextSegment& segment)        = 0;
