@@ -6,6 +6,7 @@ namespace velocity::segment {
     class EndSegment;
     class TextSegment;
     class CWDSegment;
+    class GitInfoSegment;
     class ConditionalSegment;
 
     class SegmentVisitor {
@@ -15,6 +16,7 @@ namespace velocity::segment {
         virtual void visit(EndSegment& segment)         = 0;
         virtual void visit(TextSegment& segment)        = 0;
         virtual void visit(CWDSegment& segment)         = 0;
+        virtual void visit(GitInfoSegment& segment)     = 0;
         virtual void visit(ConditionalSegment& segment) = 0;
     };
 } // namespace velocity::segment

@@ -51,6 +51,37 @@ namespace velocity::segment {
         segment.next()->accept(*this);
     }
 
+    void ReverseGenerator::visit(GitInfoSegment& segment) {
+        emit_foreground_code(segment.format().background());
+        emit_text(segment.separator());
+        emit_foreground_code(segment.format().foreground());
+        emit_background_code(segment.format().background());
+
+        emit_text(" ");
+        if (segment.detached_head() && !segment.detached_head_indicator().empty()) {
+            emit_style_start_code(segment.format().style());
+            emit_text(segment.detached_head_indicator());
+            emit_style_end_code(segment.format().style());
+            emit_text(" ");
+        } else if (!segment.branch_indicator().empty()) {
+            emit_style_start_code(segment.format().style());
+            emit_text(segment.branch_indicator());
+            emit_style_end_code(segment.format().style());
+            emit_text(" ");
+        }
+        emit_style_start_code(segment.format().style());
+        emit_text(segment.current_branch());
+        emit_style_end_code(segment.format().style());
+        emit_text(" ");
+        if (segment.has_untracked_files() && !segment.untracked_files_indicator().empty()) {
+            emit_style_start_code(segment.format().style());
+            emit_text(segment.untracked_files_indicator());
+            emit_style_end_code(segment.format().style());
+            emit_text(" ");
+        }
+        segment.next()->accept(*this);
+    }
+
     void ReverseGenerator::visit(ConditionalSegment&) {
         // TODO some error handling for this case
     }

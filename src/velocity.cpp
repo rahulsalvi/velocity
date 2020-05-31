@@ -11,6 +11,7 @@
 #include "segment/CWDSegment.h"
 #include "segment/EndSegment.h"
 #include "segment/EnvironmentConditionalSegment.h"
+#include "segment/GitInfoSegment.h"
 #include "segment/GitRepoConditionalSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
@@ -41,6 +42,7 @@ using velocity::segment::EndSegment;
 using velocity::segment::EnvironmentConditionalSegment;
 using velocity::segment::EvalVisitor;
 using velocity::segment::ForwardGenerator;
+using velocity::segment::GitInfoSegment;
 using velocity::segment::GitRepoConditionalSegment;
 using velocity::segment::ReverseGenerator;
 using velocity::segment::StartSegment;
@@ -61,6 +63,8 @@ auto term_brcyan = make_shared<TermColor>("brcyan");
 auto term_black  = make_shared<TermColor>("black");
 auto term_blue   = make_shared<TermColor>("blue");
 auto term_green  = make_shared<TermColor>("green");
+auto term_yellow = make_shared<TermColor>("yellow");
+auto term_red    = make_shared<TermColor>("red");
 
 auto term_42 = make_shared<TermColor256>(42);
 
@@ -88,9 +92,15 @@ void prompt_forward() {
         Format(term_black, term_brcyan, {}), "${USERNAME}@${HOST}", "", 0);
     auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue, {}), "", "", 0);
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git         = make_shared<TextSegment>(
-        Format(term_black, term_green, {bold_style, italic_style}), "GIT", "", 0);
-    auto end = make_shared<EndSegment>();
+    auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
+                                           Format(term_black, term_yellow, {}),
+                                           Format(term_black, term_red, {}),
+                                           "➦",
+                                           "",
+                                           "±",
+                                           "",
+                                           0);
+    auto end         = make_shared<EndSegment>();
 
     // AND
     /* env_test->set_true_segment(env_test2); */
@@ -140,19 +150,36 @@ void prompt_reverse() {
         "",
         0);
     auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, {bold_style}), "", "", 0);
-    auto end = make_shared<EndSegment>();
+    auto in_git_repo = make_shared<GitRepoConditionalSegment>();
+    auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
+                                           Format(term_black, term_yellow, {}),
+                                           Format(term_black, term_red, {}),
+                                           "➦",
+                                           "",
+                                           "±",
+                                           "",
+                                           0);
+    auto end         = make_shared<EndSegment>();
 
     start->set_next(hostinfo);
     hostinfo->set_prev(start);
     hostinfo->set_next(cwd);
     cwd->set_prev(hostinfo);
-    cwd->set_next(end);
-    end->set_prev(cwd);
+    cwd->set_next(in_git_repo);
+    in_git_repo->set_prev(cwd);
+    in_git_repo->set_next(git);
+    git->set_prev(in_git_repo);
+    git->set_next(end);
+    end->set_prev(end);
 
-    cwd->eval();
+    in_git_repo->set_true_segment(git);
+    in_git_repo->set_false_segment(end);
 
-    /* ReverseGenerator p(ansi_color_code_generator, ansi_style_code_generator); */
-    ReverseGenerator p(zsh_color_code_generator, zsh_style_code_generator);
+    EvalVisitor e;
+    start->accept(e);
+
+    ReverseGenerator p(ansi_color_code_generator, ansi_style_code_generator);
+    /* ReverseGenerator p(zsh_color_code_generator, zsh_style_code_generator); */
 
     start->accept(p);
     cout << p.text();

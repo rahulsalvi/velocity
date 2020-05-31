@@ -7,6 +7,7 @@
 #include "segment/CWDSegment.h"
 #include "segment/ConditionalSegment.h"
 #include "segment/EndSegment.h"
+#include "segment/GitInfoSegment.h"
 #include "segment/StartSegment.h"
 #include "segment/TextSegment.h"
 #include "segment/visitor/TextGenerator.h"
@@ -26,6 +27,7 @@ namespace velocity::segment {
         virtual void visit(EndSegment& segment);
         virtual void visit(TextSegment& segment);
         virtual void visit(CWDSegment& segment);
+        virtual void visit(GitInfoSegment& segment);
         virtual void visit(ConditionalSegment& segment);
     };
 } // namespace velocity::segment

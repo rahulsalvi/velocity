@@ -16,6 +16,14 @@ namespace velocity::segment {
         segment.next()->accept(*this);
     }
 
+    void EvalVisitor::visit(GitInfoSegment& segment) {
+        segment.eval_current_branch();
+        segment.eval_uncommitted_changes();
+        segment.eval_untracked_files();
+        segment.eval_format();
+        segment.next()->accept(*this);
+    }
+
     void EvalVisitor::visit(ConditionalSegment& segment) {
         shared_ptr<Segment> branch_taken =
             (segment.eval() ? segment.true_segment() : segment.false_segment());

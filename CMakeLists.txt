@@ -25,6 +25,7 @@ set(SRCS
     src/segment/EndSegment.cpp
     src/segment/CWDSegment.cpp
     src/segment/EnvironmentConditionalSegment.cpp
+    src/segment/GitInfoSegment.cpp
     src/segment/GitRepoConditionalSegment.cpp
     src/segment/visitor/EvalVisitor.cpp
     src/segment/visitor/TextGenerator.cpp
