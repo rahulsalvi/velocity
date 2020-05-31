@@ -89,17 +89,17 @@ void prompt_forward() {
     auto env_test2 =
         make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
     auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, {}), "${USERNAME}@${HOST}", "", 0);
-    auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue, {}), "", "", 0);
+        Format(term_black, term_brcyan, {}), 0, "${USERNAME}@${HOST}", "");
+    auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue, {}), 0, "", "");
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
     auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
                                            Format(term_black, term_yellow, {}),
                                            Format(term_black, term_red, {}),
+                                           0,
                                            "➦",
                                            "",
                                            "±",
-                                           "",
-                                           0);
+                                           "");
     auto end         = make_shared<EndSegment>();
 
     // AND
@@ -149,7 +149,7 @@ void prompt_reverse() {
         "${USERNAME}@${HOST}",
         "",
         0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, {bold_style}), "", "", 0);
+    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, {bold_style}), 0, "", "");
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
     auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
                                            Format(term_black, term_yellow, {}),

@@ -6,7 +6,7 @@ using velocity::color::ResetColor;
 
 namespace velocity::segment {
     EndSegment::EndSegment()
-        : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>(), {}), "", "", 0) {}
+        : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>(), {}), 0) {}
 
     EndSegment::~EndSegment() {}
 

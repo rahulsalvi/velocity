@@ -15,18 +15,19 @@ namespace velocity::segment {
     GitInfoSegment::GitInfoSegment(Format clean_format,
                                    Format dirty_format,
                                    Format detached_head_format,
+                                   int    priority,
                                    string detached_head_indicator,
                                    string branch_indicator,
                                    string untracked_files_indicator,
-                                   string separator,
-                                   int    priority)
-        : Segment(clean_format, "", separator, priority),
+                                   string separator)
+        : Segment(clean_format, priority),
           clean_format_(clean_format),
           dirty_format_(dirty_format),
           detached_head_format_(detached_head_format),
           detached_head_indicator_(detached_head_indicator),
           branch_indicator_(branch_indicator),
           untracked_files_indicator_(untracked_files_indicator),
+          separator_(separator),
           detached_head_(false),
           has_untracked_files_(false),
           has_uncommitted_changes_(false) {}
@@ -35,11 +36,17 @@ namespace velocity::segment {
 
     void GitInfoSegment::accept(SegmentVisitor& visitor) { visitor.visit(*this); }
 
-    const string& GitInfoSegment::detached_head_indicator() { return detached_head_indicator_; }
+    const string& GitInfoSegment::detached_head_indicator() const {
+        return detached_head_indicator_;
+    }
 
-    const string& GitInfoSegment::branch_indicator() { return branch_indicator_; }
+    const string& GitInfoSegment::branch_indicator() const { return branch_indicator_; }
 
-    const string& GitInfoSegment::untracked_files_indicator() { return untracked_files_indicator_; }
+    const string& GitInfoSegment::untracked_files_indicator() const {
+        return untracked_files_indicator_;
+    }
+
+    const string& GitInfoSegment::separator() const { return separator_; }
 
     const string& GitInfoSegment::current_branch() const { return current_branch_; }
 

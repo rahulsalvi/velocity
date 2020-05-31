@@ -14,18 +14,19 @@ namespace velocity::segment {
         GitInfoSegment(Format clean_format,
                        Format dirty_format,
                        Format detached_head_format,
+                       int    priority,
                        string detached_head_indicator,
                        string branch_indicator,
                        string untracked_files_indicator,
-                       string separator,
-                       int    priority);
+                       string separator);
         virtual ~GitInfoSegment();
 
         virtual void accept(SegmentVisitor& visitor) override;
 
-        virtual const string& detached_head_indicator();
-        virtual const string& branch_indicator();
-        virtual const string& untracked_files_indicator();
+        virtual const string& detached_head_indicator() const;
+        virtual const string& branch_indicator() const;
+        virtual const string& untracked_files_indicator() const;
+        virtual const string& separator() const;
 
         virtual const string& current_branch() const;
         virtual bool          detached_head() const;
@@ -45,6 +46,7 @@ namespace velocity::segment {
         string detached_head_indicator_;
         string branch_indicator_;
         string untracked_files_indicator_;
+        string separator_;
 
         string current_branch_;
         bool   detached_head_;

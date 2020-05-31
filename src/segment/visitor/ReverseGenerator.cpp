@@ -37,7 +37,7 @@ namespace velocity::segment {
         auto dirs = segment.directories();
 
         emit_foreground_code(segment.format().background());
-        emit_text(segment.separator());
+        emit_text(segment.outer_separator());
         emit_foreground_code(segment.format().foreground());
         emit_background_code(segment.format().background());
         for (auto dir = dirs.begin(); dir != dirs.end(); ++dir) {

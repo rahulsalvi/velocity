@@ -11,17 +11,19 @@ using std::vector;
 namespace velocity::segment {
     class CWDSegment : public Segment {
         public:
-        CWDSegment(Format format, string outer_separator, string inner_separator, int priority);
+        CWDSegment(Format format, int priority, string outer_separator, string inner_separator);
         virtual ~CWDSegment();
 
         virtual void accept(SegmentVisitor& visitor) override;
 
-        const string&         inner_separator();
-        const vector<string>& directories();
+        const string&         outer_separator() const;
+        const string&         inner_separator() const;
+        const vector<string>& directories() const;
 
         virtual void eval();
 
         private:
+        string         outer_separator_;
         string         inner_separator_;
         vector<string> directories_;
     };

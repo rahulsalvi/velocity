@@ -10,18 +10,22 @@
 
 namespace velocity::segment {
     CWDSegment::CWDSegment(Format format,
+                           int    priority,
                            string outer_separator,
-                           string inner_separator,
-                           int    priority)
-        : Segment(format, "", outer_separator, priority), inner_separator_(inner_separator) {}
+                           string inner_separator)
+        : Segment(format, priority),
+          outer_separator_(outer_separator),
+          inner_separator_(inner_separator) {}
 
     CWDSegment::~CWDSegment() {}
 
     void CWDSegment::accept(SegmentVisitor& visitor) { visitor.visit(*this); }
 
-    const string& CWDSegment::inner_separator() { return inner_separator_; }
+    const string& CWDSegment::outer_separator() const { return outer_separator_; }
 
-    const vector<string>& CWDSegment::directories() { return directories_; }
+    const string& CWDSegment::inner_separator() const { return inner_separator_; }
+
+    const vector<string>& CWDSegment::directories() const { return directories_; }
 
     void CWDSegment::eval() {
         char buf[CWD_BUF_SIZE];

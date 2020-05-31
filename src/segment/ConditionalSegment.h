@@ -22,8 +22,7 @@ namespace velocity::segment {
     class ConditionalSegment : public Segment {
         public:
         ConditionalSegment()
-            : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>(), {}), "", "", 0) {
-        }
+            : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>(), {}), 0) {}
         virtual ~ConditionalSegment() {}
 
         virtual void accept(SegmentVisitor& visitor) = 0;

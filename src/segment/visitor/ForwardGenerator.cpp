@@ -45,7 +45,7 @@ namespace velocity::segment {
         }
         emit_foreground_code(segment.format().background());
         emit_background_code(segment.next()->format().background());
-        emit_text(segment.separator());
+        emit_text(segment.outer_separator());
         segment.next()->accept(*this);
     }
 

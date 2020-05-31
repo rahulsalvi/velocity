@@ -15,14 +15,11 @@ namespace velocity::segment {
 
     class Segment {
         public:
-        Segment(Format format, string text, string separator, int priority)
-            : format_(format), text_(text), separator_(separator), priority_(priority) {}
-        virtual ~Segment(){};
+        Segment(Format format, int priority) : format_(format), priority_(priority) {}
+        virtual ~Segment() {}
 
-        const Format& format() { return format_; };
-        const string& text() { return text_; };
-        const string& separator() { return separator_; };
-        int           priority() const { return priority_; }
+        virtual const Format& format() const { return format_; };
+        virtual int           priority() const { return priority_; }
 
         void set_next(shared_ptr<Segment> next) { next_ = next; }
         void set_prev(shared_ptr<Segment> prev) { prev_ = prev; }
@@ -37,8 +34,6 @@ namespace velocity::segment {
         shared_ptr<Segment> next_;
 
         Format format_;
-        string text_;
-        string separator_;
         int    priority_;
     };
 } // namespace velocity::segment
