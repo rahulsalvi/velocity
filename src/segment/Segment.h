@@ -2,12 +2,10 @@
 #define SEGMENT_H
 
 #include <memory>
-#include <string>
 
 #include "Format.h"
 
 using std::shared_ptr;
-using std::string;
 using velocity::Format;
 
 namespace velocity::segment {
@@ -15,11 +13,9 @@ namespace velocity::segment {
 
     class Segment {
         public:
-        Segment(Format format, int priority) : format_(format), priority_(priority) {}
         virtual ~Segment() {}
 
-        virtual const Format& format() const { return format_; };
-        virtual int           priority() const { return priority_; }
+        virtual shared_ptr<Format> format() const = 0;
 
         void set_next(shared_ptr<Segment> next) { next_ = next; }
         void set_prev(shared_ptr<Segment> prev) { prev_ = prev; }
@@ -29,12 +25,9 @@ namespace velocity::segment {
 
         virtual void accept(SegmentVisitor& visitor) = 0;
 
-        protected:
+        private:
         shared_ptr<Segment> prev_;
         shared_ptr<Segment> next_;
-
-        Format format_;
-        int    priority_;
     };
 } // namespace velocity::segment
 

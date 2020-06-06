@@ -20,7 +20,6 @@ namespace velocity::segment {
         segment.eval_current_branch();
         segment.eval_uncommitted_changes();
         segment.eval_untracked_files();
-        segment.eval_format();
         segment.next()->accept(*this);
     }
 

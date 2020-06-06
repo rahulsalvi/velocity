@@ -1,11 +1,11 @@
 #ifndef ENDSEGMENT_H
 #define ENDSEGMENT_H
 
-#include "segment/Segment.h"
+#include "segment/ControlSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
 
 namespace velocity::segment {
-    class EndSegment : public Segment {
+    class EndSegment : public ControlSegment {
         public:
         EndSegment();
         virtual ~EndSegment();

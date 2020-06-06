@@ -3,15 +3,18 @@
 
 #include <vector>
 
-#include "segment/Segment.h"
+#include "segment/DisplayedSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
 
 using std::vector;
 
 namespace velocity::segment {
-    class CWDSegment : public Segment {
+    class CWDSegment : public DisplayedSegment {
         public:
-        CWDSegment(Format format, int priority, string outer_separator, string inner_separator);
+        CWDSegment(shared_ptr<Format> format,
+                   int                priority,
+                   string             outer_separator,
+                   string             inner_separator);
         virtual ~CWDSegment();
 
         virtual void accept(SegmentVisitor& visitor) override;

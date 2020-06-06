@@ -3,12 +3,8 @@
 
 #include <memory>
 
-#include "color/ResetColor.h"
-#include "segment/Segment.h"
+#include "segment/ControlSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
-
-using std::make_shared;
-using velocity::color::ResetColor;
 
 namespace velocity::segment {
     enum Condition {
@@ -19,10 +15,9 @@ namespace velocity::segment {
         GREATER_THAN_EQUALS,
         LESS_THAN_EQUALS
     };
-    class ConditionalSegment : public Segment {
+    class ConditionalSegment : public ControlSegment {
         public:
-        ConditionalSegment()
-            : Segment(Format(make_shared<ResetColor>(), make_shared<ResetColor>(), {}), 0) {}
+        ConditionalSegment() {}
         virtual ~ConditionalSegment() {}
 
         virtual void accept(SegmentVisitor& visitor) = 0;

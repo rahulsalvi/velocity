@@ -1,11 +1,11 @@
 #ifndef STARTSEGMENT_H
 #define STARTSEGMENT_H
 
-#include "segment/Segment.h"
+#include "segment/ControlSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
 
 namespace velocity::segment {
-    class StartSegment : public Segment {
+    class StartSegment : public ControlSegment {
         public:
         StartSegment();
         virtual ~StartSegment();

@@ -66,8 +66,6 @@ auto term_green  = make_shared<TermColor>("green");
 auto term_yellow = make_shared<TermColor>("yellow");
 auto term_red    = make_shared<TermColor>("red");
 
-auto term_42 = make_shared<TermColor256>(42);
-
 auto bold_style             = make_shared<BoldStyle>();
 auto faint_style            = make_shared<FaintStyle>();
 auto italic_style           = make_shared<ItalicStyle>();
@@ -82,49 +80,26 @@ auto ansi_style_code_generator = make_shared<ANSIStyleCodeGenerator>();
 auto zsh_color_code_generator = make_shared<ZshColorCodeGenerator>();
 auto zsh_style_code_generator = make_shared<ZshStyleCodeGenerator>();
 
+auto normal_style = vector<shared_ptr<Style>>();
+
 void prompt_forward() {
-    auto start = make_shared<StartSegment>();
-    auto env_test =
-        make_shared<EnvironmentConditionalSegment>("TEST1", "", velocity::segment::NOT_EQUALS);
-    auto env_test2 =
-        make_shared<EnvironmentConditionalSegment>("TEST2", "foo", velocity::segment::EQUALS);
-    auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, {}), 0, "${USERNAME}@${HOST}", "");
-    auto cwd         = make_shared<CWDSegment>(Format(term_black, term_blue, {}), 0, "", "");
+    auto cwd_format          = make_shared<Format>(term_black, term_blue, normal_style);
+    auto git_clean_format    = make_shared<Format>(term_black, term_green, normal_style);
+    auto git_dirty_format    = make_shared<Format>(term_black, term_yellow, normal_style);
+    auto git_detached_format = make_shared<Format>(term_black, term_red, normal_style);
+
+    auto start       = make_shared<StartSegment>();
+    auto cwd         = make_shared<CWDSegment>(cwd_format, 0, "", "");
     auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
-                                           Format(term_black, term_yellow, {}),
-                                           Format(term_black, term_red, {}),
-                                           0,
-                                           "➦",
-                                           "",
-                                           "±",
-                                           "");
-    auto end         = make_shared<EndSegment>();
-
-    // AND
-    /* env_test->set_true_segment(env_test2); */
-    /* env_test->set_false_segment(cwd); */
-    /* env_test2->set_true_segment(hostinfo); */
-    /* env_test2->set_false_segment(cwd); */
-
-    // OR
-    env_test->set_true_segment(hostinfo);
-    env_test->set_false_segment(env_test2);
-    env_test2->set_true_segment(hostinfo);
-    env_test2->set_false_segment(cwd);
+    auto git         = make_shared<GitInfoSegment>(
+        git_clean_format, git_dirty_format, git_detached_format, 0, "➦", "", "±", "");
+    auto end = make_shared<EndSegment>();
 
     in_git_repo->set_true_segment(git);
     in_git_repo->set_false_segment(end);
 
-    start->set_next(env_test);
-    env_test->set_prev(start);
-    env_test->set_next(env_test2);
-    env_test2->set_prev(env_test);
-    env_test2->set_next(hostinfo);
-    hostinfo->set_prev(env_test2);
-    hostinfo->set_next(cwd);
-    cwd->set_prev(hostinfo);
+    start->set_next(cwd);
+    cwd->set_prev(start);
     cwd->set_next(in_git_repo);
     in_git_repo->set_prev(cwd);
     in_git_repo->set_next(git);
@@ -142,54 +117,10 @@ void prompt_forward() {
     cout << p.text();
 }
 
-void prompt_reverse() {
-    auto start    = make_shared<StartSegment>();
-    auto hostinfo = make_shared<TextSegment>(
-        Format(term_black, term_brcyan, {strikethrough_style, italic_style}),
-        "${USERNAME}@${HOST}",
-        "",
-        0);
-    auto cwd = make_shared<CWDSegment>(Format(term_black, term_blue, {bold_style}), 0, "", "");
-    auto in_git_repo = make_shared<GitRepoConditionalSegment>();
-    auto git         = make_shared<GitInfoSegment>(Format(term_black, term_green, {}),
-                                           Format(term_black, term_yellow, {}),
-                                           Format(term_black, term_red, {}),
-                                           "➦",
-                                           "",
-                                           "±",
-                                           "",
-                                           0);
-    auto end         = make_shared<EndSegment>();
-
-    start->set_next(hostinfo);
-    hostinfo->set_prev(start);
-    hostinfo->set_next(cwd);
-    cwd->set_prev(hostinfo);
-    cwd->set_next(in_git_repo);
-    in_git_repo->set_prev(cwd);
-    in_git_repo->set_next(git);
-    git->set_prev(in_git_repo);
-    git->set_next(end);
-    end->set_prev(end);
-
-    in_git_repo->set_true_segment(git);
-    in_git_repo->set_false_segment(end);
-
-    EvalVisitor e;
-    start->accept(e);
-
-    ReverseGenerator p(ansi_color_code_generator, ansi_style_code_generator);
-    /* ReverseGenerator p(zsh_color_code_generator, zsh_style_code_generator); */
-
-    start->accept(p);
-    cout << p.text();
-}
-
 int main() {
     auto a = std::chrono::high_resolution_clock::now();
 
     prompt_forward();
-    /* prompt_reverse(); */
 
     auto   b          = std::chrono::high_resolution_clock::now();
     double time_taken = std::chrono::duration_cast<std::chrono::microseconds>(b - a).count();

@@ -9,11 +9,11 @@
 #endif
 
 namespace velocity::segment {
-    CWDSegment::CWDSegment(Format format,
-                           int    priority,
-                           string outer_separator,
-                           string inner_separator)
-        : Segment(format, priority),
+    CWDSegment::CWDSegment(shared_ptr<Format> format,
+                           int                priority,
+                           string             outer_separator,
+                           string             inner_separator)
+        : DisplayedSegment(format, priority),
           outer_separator_(outer_separator),
           inner_separator_(inner_separator) {}
 

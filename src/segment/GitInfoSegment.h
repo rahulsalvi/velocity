@@ -3,25 +3,25 @@
 
 #include <string>
 
-#include "segment/Segment.h"
+#include "segment/DisplayedSegment.h"
 #include "segment/visitor/SegmentVisitor.h"
 
 using std::string;
 
 namespace velocity::segment {
-    class GitInfoSegment : public Segment {
+    class GitInfoSegment : public DisplayedSegment {
         public:
-        GitInfoSegment(Format clean_format,
-                       Format dirty_format,
-                       Format detached_head_format,
-                       int    priority,
-                       string detached_head_indicator,
-                       string branch_indicator,
-                       string untracked_files_indicator,
-                       string separator);
+        GitInfoSegment(shared_ptr<Format> clean_format,
+                       shared_ptr<Format> dirty_format,
+                       shared_ptr<Format> detached_head_format,
+                       int                priority,
+                       string             detached_head_indicator,
+                       string             branch_indicator,
+                       string             untracked_files_indicator,
+                       string             separator);
         virtual ~GitInfoSegment();
 
-        virtual void accept(SegmentVisitor& visitor) override;
+        virtual shared_ptr<Format> format() const override;
 
         virtual const string& detached_head_indicator() const;
         virtual const string& branch_indicator() const;
@@ -36,12 +36,13 @@ namespace velocity::segment {
         virtual void eval_current_branch();
         virtual void eval_untracked_files();
         virtual void eval_uncommitted_changes();
-        virtual void eval_format();
+
+        virtual void accept(SegmentVisitor& visitor) override;
 
         private:
-        Format clean_format_;
-        Format dirty_format_;
-        Format detached_head_format_;
+        shared_ptr<Format> clean_format_;
+        shared_ptr<Format> dirty_format_;
+        shared_ptr<Format> detached_head_format_;
 
         string detached_head_indicator_;
         string branch_indicator_;

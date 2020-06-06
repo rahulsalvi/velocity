@@ -12,15 +12,15 @@ using velocity::utils::path_exists;
 using std::remove;
 
 namespace velocity::segment {
-    GitInfoSegment::GitInfoSegment(Format clean_format,
-                                   Format dirty_format,
-                                   Format detached_head_format,
-                                   int    priority,
-                                   string detached_head_indicator,
-                                   string branch_indicator,
-                                   string untracked_files_indicator,
-                                   string separator)
-        : Segment(clean_format, priority),
+    GitInfoSegment::GitInfoSegment(shared_ptr<Format> clean_format,
+                                   shared_ptr<Format> dirty_format,
+                                   shared_ptr<Format> detached_head_format,
+                                   int                priority,
+                                   string             detached_head_indicator,
+                                   string             branch_indicator,
+                                   string             untracked_files_indicator,
+                                   string             separator)
+        : DisplayedSegment(NULL, priority),
           clean_format_(clean_format),
           dirty_format_(dirty_format),
           detached_head_format_(detached_head_format),
@@ -34,7 +34,15 @@ namespace velocity::segment {
 
     GitInfoSegment::~GitInfoSegment() {}
 
-    void GitInfoSegment::accept(SegmentVisitor& visitor) { visitor.visit(*this); }
+    shared_ptr<Format> GitInfoSegment::format() const {
+        if (detached_head_) {
+            return detached_head_format_;
+        } else if (has_uncommitted_changes_ || has_untracked_files_) {
+            return dirty_format_;
+        } else {
+            return clean_format_;
+        }
+    }
 
     const string& GitInfoSegment::detached_head_indicator() const {
         return detached_head_indicator_;
@@ -91,17 +99,9 @@ namespace velocity::segment {
 
     void GitInfoSegment::eval_uncommitted_changes() {
         if (detached_head_) { return; }
-        exec_exit_code("git update-index --refresh");
+        exec_stdout("git update-index --refresh");
         has_uncommitted_changes_ = exec_exit_code("git diff-index --quiet HEAD --");
     }
 
-    void GitInfoSegment::eval_format() {
-        if (detached_head_) {
-            format_ = detached_head_format_;
-        } else if (has_uncommitted_changes_ || has_untracked_files_) {
-            format_ = dirty_format_;
-        } else {
-            format_ = clean_format_;
-        }
-    }
+    void GitInfoSegment::accept(SegmentVisitor& visitor) { visitor.visit(*this); }
 } // namespace velocity::segment

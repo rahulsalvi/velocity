@@ -1,6 +1,13 @@
 #include "Format.h"
+#include "color/ResetColor.h"
+
+using std::make_shared;
+using velocity::color::ResetColor;
 
 namespace velocity {
+    Format::Format()
+        : foreground_(make_shared<ResetColor>()), background_(make_shared<ResetColor>()) {}
+
     Format::Format(shared_ptr<Color>         foreground,
                    shared_ptr<Color>         background,
                    vector<shared_ptr<Style>> style)

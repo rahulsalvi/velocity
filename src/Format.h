@@ -15,6 +15,7 @@ using velocity::style::Style;
 namespace velocity {
     class Format {
         public:
+        Format();
         Format(shared_ptr<Color>         foreground,
                shared_ptr<Color>         background,
                vector<shared_ptr<Style>> style);
