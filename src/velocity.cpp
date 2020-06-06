@@ -17,6 +17,7 @@
 #include "segment/TextSegment.h"
 #include "segment/visitor/EvalVisitor.h"
 #include "segment/visitor/ForwardGenerator.h"
+#include "segment/visitor/ForwardLengthInChars.h"
 #include "segment/visitor/ReverseGenerator.h"
 #include "style/BoldStyle.h"
 #include "style/DoubleUnderlineStyle.h"
@@ -42,6 +43,7 @@ using velocity::segment::EndSegment;
 using velocity::segment::EnvironmentConditionalSegment;
 using velocity::segment::EvalVisitor;
 using velocity::segment::ForwardGenerator;
+using velocity::segment::ForwardLengthInChars;
 using velocity::segment::GitInfoSegment;
 using velocity::segment::GitRepoConditionalSegment;
 using velocity::segment::ReverseGenerator;
@@ -109,6 +111,10 @@ void prompt_forward() {
 
     EvalVisitor e;
     start->accept(e);
+
+    ForwardLengthInChars l;
+    start->accept(l);
+    cerr << "length: " << l.length() << endl;
 
     /* ForwardGenerator p(ansi_color_code_generator, ansi_style_code_generator); */
     ForwardGenerator p(zsh_color_code_generator, zsh_style_code_generator);

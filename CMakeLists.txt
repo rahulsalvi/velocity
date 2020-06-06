@@ -31,6 +31,8 @@ set(SRCS
     src/segment/visitor/TextGenerator.cpp
     src/segment/visitor/ForwardGenerator.cpp
     src/segment/visitor/ReverseGenerator.cpp
+    src/segment/visitor/ForwardLengthInChars.cpp
+    src/utils.cpp
     src/velocity.cpp)
 
 set(CMAKE_CXX_STANDARD 17)
