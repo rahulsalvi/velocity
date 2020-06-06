@@ -12,6 +12,8 @@ using std::string;
 namespace velocity::utils {
     string get_cwd();
 
+    string get_homedir();
+
     bool path_exists(string path);
 
     string file_contents(string file);

@@ -1,12 +1,8 @@
-#include <pwd.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 #include "segment/CWDSegment.h"
+#include "utils.h"
 
-#ifndef CWD_BUF_SIZE
-#define CWD_BUF_SIZE 1024
-#endif
+using velocity::utils::get_cwd;
+using velocity::utils::get_homedir;
 
 namespace velocity::segment {
     CWDSegment::CWDSegment(shared_ptr<Format> format,
@@ -28,17 +24,11 @@ namespace velocity::segment {
     const vector<string>& CWDSegment::directories() const { return directories_; }
 
     void CWDSegment::eval() {
-        char buf[CWD_BUF_SIZE];
-        // TODO some better error handling would be nice
-        if (!getcwd(buf, CWD_BUF_SIZE)) { return; }
-        const char* homedir;
-        if (!(homedir = getenv("HOME"))) {
-            struct passwd* pw = getpwuid(getuid());
-            if (pw) { homedir = pw->pw_dir; }
-        }
-        if (!homedir) { return; }
-        string cwd(buf);
-        string home(homedir);
+        string cwd = get_cwd();
+        if (cwd.empty()) { return; }
+        string home = get_homedir();
+        if (home.empty()) { return; }
+
         if (cwd.find(home) == 0) {
             cwd.erase(0, home.length());
             cwd = "~" + cwd;

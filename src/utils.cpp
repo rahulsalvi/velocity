@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <pwd.h>
 #include <sstream>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -20,6 +21,16 @@ namespace velocity::utils {
         char buf[CWD_BUF_SIZE];
         if (!getcwd(buf, CWD_BUF_SIZE)) { return ""; }
         return string(buf);
+    }
+
+    string get_homedir() {
+        const char* homedir;
+        if (!(homedir = getenv("HOME"))) {
+            struct passwd* pw = getpwuid(getuid());
+            if (pw) { homedir = pw->pw_dir; }
+        }
+        if (!homedir) { return ""; }
+        return string(homedir);
     }
 
     bool path_exists(string path) {
